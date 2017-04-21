@@ -1,0 +1,79 @@
+---
+title: "Using the swirl Package"
+author: "Matthew Richards"
+date: "April 21, 2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Getting Started
+
+R has a useful package for interactive lessons called *swirl*. There are numerous lessons available for you to get more practice, some of which I will list at the end of this document as recommended exercises. First, I'll briefly demonstrate how to get up and running with *swirl*.
+
+### Installing and Loading *swirl* 
+
+The *swirl* package is available through CRAN and can be installed using standard installation tools. The most straightforward way:
+
+```{r eval = FALSE}
+install.packages("swirl")
+```
+
+You can then load the package, which will provide some useful intro text telling you how to start the program:
+
+```{r}
+library(swirl)
+```
+
+Now that *swirl* is running, let's talk about how to add content. 
+
+### Installing Lessons
+
+There are 2 basic ways to install lessons. The first is to start *swirl* and let it guide you.
+
+```{r eval=FALSE}
+swirl()
+```
+
+Note that I'm not showing output here because *swirl* is interactive and I can't really do that here. But if you run the command, you'll be able to quickly get to some basic packages you can have installed. However, the list is pretty short, so if you want more package options, you'll need another method.
+
+My preferred avenue is to use *install_from_swirl()* to get new packages. For instance, the "Getting and Cleaning Data" package contains material on dplyr. I can install it as follows:
+
+```{r eval = FALSE}
+install_from_swirl("Getting and Cleaning Data")
+```
+
+Once again, I'm not printing out anything because the output isn't useful. Now that your package is installed, run the *swirl()* command to start the interactive session and follow the prompts to access your lessons.
+
+## Recommended Lessons
+
+Here are some lessons you might find useful, though you may feel free to do whatever lessons you choose. I'll list the overall package, the specific lesson, and the last lesson I think you'll need to complete in DataCamp before attempting it.
+
+```{r echo = FALSE}
+
+df <- data.frame(package.name = c("Getting and Cleaning Data",
+                                  "Getting and Cleaning Data",
+                                  "R Programming",
+                                  "R Programming",
+                                  "R Programming",
+                                  "R Programming"),
+                 lesson.name = c("Manipulating Data with dplyr",
+                                 "Grouping and Chaining with dplyr",
+                                 "Logic",
+                                 "Functions",
+                                 "lapply and sapply",
+                                 "vapply and tapply"),
+                 attempt.after = c("Summarise and the pipe operator",
+                                   "Summarise and the pipe operator",
+                                   "Loops",
+                                   "Functions",
+                                   "The apply family",
+                                   "The apply family"))
+knitr::kable(df, caption = "Recommended Lessons in swirl")
+```
+
+I will attempt to update this list dynamically as the class progresses.
