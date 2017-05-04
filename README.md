@@ -16,4 +16,4 @@ As the course goes on, you can expect to find more resources here.
 
 ### Week 3 
 
--A series of short videos explaining Git and Github is available from FreeCodeCamp.com; you can find them on Youtube [here](https://www.youtube.com/playlist?list=PLWKjhJtqVAbkFiqHnNaxpOPhh9tSWMXIF) 
+- A series of short videos explaining Git and Github is available from FreeCodeCamp.com; you can find them on Youtube [here](https://www.youtube.com/playlist?list=PLWKjhJtqVAbkFiqHnNaxpOPhh9tSWMXIF) 
