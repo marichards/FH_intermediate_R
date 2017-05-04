@@ -8,6 +8,20 @@ This is the portal to Intermediate R, a class in the [Fredhutch.io series](http:
 
 As the course goes on, you can expect to find more resources here. 
 
+### Class Schedule
+
+Our room moves around for many of the 7 weeks. Here are all the rooms:
+
+Date |  Room # 
+---- | --------
+4/20 | D4-120
+4/27 | M3-A805
+5/4 | M3-A805
+5/11 | B1-072/074
+5/18 | M4-A823
+5/25 | M3-C204
+6/1 | M3-C204
+
 ### Week 2 Materials
 
 - Static view of the [In-Class Exercises](http://nbviewer.jupyter.org/github/marichards/FH_Intermediate_R/blob/master/Week%202%20In-Class%20Exercises.ipynb)
