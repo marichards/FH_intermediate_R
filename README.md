@@ -14,3 +14,6 @@ As the course goes on, you can expect to find more resources here.
 - Link to download the [Poker Hands Data](http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-training-true.data)
 - Description of the [Week 2 Dataset](http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand.names)
 
+### Week 3 
+
+-A series of short videos explaining Git and Github is available from FreeCodeCamp.com; you can find them on Youtube [here](https://www.youtube.com/playlist?list=PLWKjhJtqVAbkFiqHnNaxpOPhh9tSWMXIF) 
