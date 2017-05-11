@@ -37,3 +37,4 @@ Date |  Room #
 ### Week 4
 
 - We'll be doing an in-class exercise using some data from my own research. The data can be found in the `mayo.tcx.rds` file in the repository; alternatively, it can be directly downloaded [here](https://github.com/marichards/FH_intermediate_R/raw/master/mayo.tcx.rds)
+- Instructions can be found in a Jupyter Notebook [here](http://nbviewer.jupyter.org/github/marichards/FH_Intermediate_R/blob/master/Week%204%20In%20Class%20Work.ipynb)
