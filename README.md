@@ -34,4 +34,6 @@ Date |  Room #
 - Some cool comment [this is a weblink](https://www.youtube.com/)
 - A second cool comment
 
+### Week 4
 
+- We'll be doing an in-class exercise using some data from my own research. The data can be found in the `mayo.tcx.rds` file in the repository; alternatively, it can be directly downloaded [here](https://github.com/marichards/FH_intermediate_R/raw/master/mayo.tcx.rds)
