@@ -1,0 +1,120 @@
+---
+title: "Intro to Parallel Programming in R"
+author: "Matt Richards"
+date: "5/12/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+One of the many benefits of modern computing is that you generally have multiple cores at your disposal, even if you're just on your own laptop. These multiple cores enable you to run tasks in parallel, cutting down on required compute time. Though this gain in speed might not seem like much if you're just running simple operations, it can be hugely helpful when working on more complex, lengthy tasks. In this document, we'll briefly look at some tools for parallel processing in R and demonstrate how they work.
+
+## The doParallel Package
+
+There are a number of different packages here; we'll be using the `doParallel` package as our main engine. This package contains tools for both setting up and executing our parallel tasks, and it's the package I use for parallelization in my own work. Before going any further, you should install it on your machine in the usual manner. Then we'll load it up:
+
+```{r}
+library(doParallel)
+```
+
+In this document, we will touch upon some of what you can do with the `doParallel` package, but for a full set of documentation you can checkout the `doParallel` [vignette](https://cran.r-project.org/web/packages/doParallel/vignettes/gettingstartedParallel.pdf) or [reference manual](https://cran.r-project.org/web/packages/doParallel/doParallel.pdf).
+
+## The basic workflow
+
+I would summarize running a parallel process as the following: 
+
+1. Designate your workers and register a cluster
+2. Pass any necessary information into your cluster
+3. Run your operations in loop-like notation
+
+I'll go through each of these steps separately, then we'll put them together for some examples
+
+### Registering a cluster
+
+Your machine has multiple cores, but it won't know to use them in parallel unless you tell it to. We'll do this using the `makeCluster` command to tell our machine to create a computational cluster that runs cores in parallel. But wait! How many cores should we use? It helps to know how many cores we have at our disposal, a figure we can obtain using `detectCores()`:
+
+```{r}
+detectCores()
+```
+
+As you can see, I'm using a machine with 4 cores, but if you're on a dedicated cluster or something of that nature, you may very well find yourself with many more. In any case, the follow-up question is: how many of my cores should I actually use? In general, if I don't have any other constraints, I'll use my maximum number of cores minus 1. So to setup my parallel process, I would run:
+
+```{r}
+cl <- makeCluster(detectCores() - 1)
+cl
+```
+
+Now I have a cluster called `"cl"` and as you can see, it's a cluster with 3 nodes. My cluster now exists, but I still need to tell my machine to use it by registering the cluster as follows: 
+```{r}
+registerDoParallel(cl)
+```
+
+And that's it for the setup; my cluster is primed and ready to go, with 3 workers to do parallel tasks. 
+
+### Run your operations like a loop
+
+If you look at our list of steps, you'll notice I just skipped from #1 to #3; there's a reason for that, and I'll get to it shortly, but lets talk now about how to actually use our cluster. Though there are multiple ways of running parallel processes, we'll be using the `foreach` package, which was already loaded with `doParallel`. The `foreach` function looks a lot like a `for` loop, with a few differences. For instance, if I wanted to use a `for` loop to do something simple like, say, take a short list of numbers and increment each number by 1, I could do something like this:
+
+```{r}
+my.list <- 1:10
+for(i in 1:length(my.list)){
+  my.list[i] <- my.list[i] + 1
+}
+my.list
+```
+
+The parallel way of doing this looks pretty much the same, but there are a few tweaks:
+
+```{r}
+my.list <- 1:10
+my.list <- foreach(i = 1:length(my.list)) %dopar% {
+  my.list[i] <- my.list[i] + 1
+}
+unlist(my.list)
+```
+
+Some things to note here:
+
+* The `foreach` declaration uses the `i =` convention rather than `i in` convention
+* The `%dopar%` statement is critical; you can alternatively say `%do%` instead, but then it won't run in parallel
+* The `foreach` method requires that I assign an output value; if I don't, I won't capture my output
+* Using `foreach` returns a list
+
+Overall, using parallel processing requires a bit more typing than regular processing, so you wouldn't ever use it for something as trivial as this. But what you invest in setup can payoff quite a bit if you're doing some big, time-intensive task. 
+
+### Some Examples
+
+
+
+### Pass in information
+
+Now that I've briefly shown you how a cluster works, lets go back to Step #2, "Passing in Information". In the Intermediate R course on DataCamp, we briefly mentioned variable scope when talking about writing functions. The basic premise is that our function can use whatever variable names it wants, but that these variables won't visible to the global environment. A cluster of workers like the one we just created is somewhat limited by the same issue. It can see variables in the same local environment, but not variables in the parent environment. If this sounds a little confusing...that's because it is, so let's illustrate with an example. Suppose, for instance, that I wanted to alter my previous trivial loop to add an integer, `x`, to each thing in my list rather than 1. It seemingly look pretty similar:
+
+```{r}
+my.list <- 1:10
+x <- 5
+my.list <- foreach(i = 1:length(my.list)) %dopar% {
+  my.list[i] <- my.list[i] + x
+}
+unlist(my.list)
+```
+
+This works just fine; the `foreach` and the `x` variable are both in the same local environment, so we're okay. However, we might want to wrap our `foreach` inside of a function that we can use repeatedly. So we could try something like this:
+
+```{r}
+stopCluster(cl)
+
+x <- 5 
+cl <- makeCluster(detectCores()-1)
+registerDoParallel(cl)
+my.list <- 1:10
+my.list <- foreach(i = 1:length(my.list)) %dopar% {
+  my.list[i] <- my.list[i] + x
+}
+unlist(my.list)
+
+```
