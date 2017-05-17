@@ -40,4 +40,8 @@ Date |  Room #
 ### Week 5
 
 - I've created a short intro to parallelization that you can read [here](https://marichards.github.io/FH_intermediate_R/Into_to_Parallel.html)
-- The DataCamp materials gave a very brief intro to regular expressions; we'll be going more in depth and doing work with these in class. As such, [here](https://www.youtube.com/watch?v=tD8QZVRftDE) is a brief video from Jeff Leek at Johns Hopkins University that talks a lot more about regular expressions in R. 
+- The DataCamp materials gave a very brief intro to regular expressions; we'll be going more in depth and doing work with these in class. As such, here are two brief videos from Jeff Leek at Johns Hopkins University that talk a lot more about regular expressions in R. 
+
+    - [Video 1](https://www.youtube.com/watch?v=tD8QZVRftDE)
+    
+    - [Video 2](https://www.youtube.com/watch?v=_i5n9lu43bc)
