@@ -25,13 +25,12 @@ In this document, we will touch upon some of what you can do with the `doParalle
 
 ## The basic workflow
 
-I would summarize running a parallel process as the following: 
+I would summarize running a parallel process as essentially a 2-step process: 
 
-1. Designate your workers and register a cluster
-2. Pass any necessary information into your cluster
-3. Run your operations in loop-like notation
+1. Setup and register a cluster
+2. Run your operations in loop-like notation
 
-I'll go through each of these steps separately, then we'll put them together for some examples
+I'll go through each of these steps separately, then we'll put them together for a few quick examples
 
 ### Registering a cluster
 
@@ -57,7 +56,7 @@ And that's it for the setup; my cluster is primed and ready to go, with 3 worker
 
 ### Run your operations like a loop
 
-If you look at our list of steps, you'll notice I just skipped from #1 to #3; there's a reason for that, and I'll get to it shortly, but lets talk now about how to actually use our cluster. Though there are multiple ways of running parallel processes, we'll be using the `foreach` package, which was already loaded with `doParallel`. The `foreach` function looks a lot like a `for` loop, with a few differences. For instance, if I wanted to use a `for` loop to do something simple like, say, take a short list of numbers and increment each number by 1, I could do something like this:
+Though there are multiple ways of running parallel processes, we'll be using the `foreach` package, which was already loaded with `doParallel`. The `foreach` function looks a lot like a `for` loop, with a few differences. For instance, if I wanted to use a `for` loop to do something simple like, say, take a short list of numbers and increment each number by 1, I could do something like this:
 
 ```{r}
 my.list <- 1:10
@@ -83,10 +82,12 @@ Some things to note here:
 * The `%dopar%` statement is critical; you can alternatively say `%do%` instead, but then it won't run in parallel
 * The `foreach` method requires that I assign an output value; if I don't, I won't capture my output
 * Using `foreach` returns a list
+* A `foreach` "loop" operates like a function, returning the last statement or a value captured using `return(value)`
 
 Overall, using parallel processing requires a bit more typing than regular processing, so you wouldn't ever use it for something as trivial as this. But what you invest in setup can payoff quite a bit if you're doing some big, time-intensive task. 
 
 ### Some Examples
+
 
 
 
