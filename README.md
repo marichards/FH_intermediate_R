@@ -31,10 +31,13 @@ Date |  Room #
 ### Week 3 
 
 - A series of short videos explaining Git and Github is available from FreeCodeCamp.com; you can find them on Youtube [here](https://www.youtube.com/playlist?list=PLWKjhJtqVAbkFiqHnNaxpOPhh9tSWMXIF) 
-- Some cool comment [this is a weblink](https://www.youtube.com/)
-- A second cool comment
 
 ### Week 4
 
 - We'll be doing an in-class exercise using some data from my own research. The data can be found in the `mayo.tcx.rds` file in the repository; alternatively, it can be directly downloaded [here](https://github.com/marichards/FH_intermediate_R/raw/master/mayo.tcx.rds)
 - Instructions can be found in a Jupyter Notebook [here](http://nbviewer.jupyter.org/github/marichards/FH_Intermediate_R/blob/master/Week%204%20In%20Class%20Work.ipynb)
+
+### Week 5
+
+- I've created a short intro to parallelization that you can read [here](https://marichards.github.io/FH_intermediate_R/Into_to_Parallel.html)
+- The DataCamp materials gave a very brief intro to regular expressions; we'll be going more in depth and doing work with these in class. As such, [here](https://www.youtube.com/watch?v=tD8QZVRftDE) is a brief video from Jeff Leek at Johns Hopkins University that talks a lot more about regular expressions in R. 
