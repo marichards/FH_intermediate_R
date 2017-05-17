@@ -1,7 +1,7 @@
 ---
 title: "Intro to Parallel Programming in R"
 author: "Matt Richards"
-date: "5/12/2017"
+date: "5/17/2017"
 output: html_document
 ---
 
@@ -74,6 +74,7 @@ my.list <- foreach(i = 1:length(my.list)) %dopar% {
   my.list[i] <- my.list[i] + 1
 }
 unlist(my.list)
+stopCluster(cl)
 ```
 
 Some things to note here:
@@ -83,39 +84,61 @@ Some things to note here:
 * The `foreach` method requires that I assign an output value; if I don't, I won't capture my output
 * Using `foreach` returns a list
 * A `foreach` "loop" operates like a function, returning the last statement or a value captured using `return(value)`
+* I used the `stopCluster` function at the end to terminate the cluster, preventing it from possibly gumming up the works
 
 Overall, using parallel processing requires a bit more typing than regular processing, so you wouldn't ever use it for something as trivial as this. But what you invest in setup can payoff quite a bit if you're doing some big, time-intensive task. 
 
-### Some Examples
+### Another Example
 
-
-
-
-### Pass in information
-
-Now that I've briefly shown you how a cluster works, lets go back to Step #2, "Passing in Information". In the Intermediate R course on DataCamp, we briefly mentioned variable scope when talking about writing functions. The basic premise is that our function can use whatever variable names it wants, but that these variables won't visible to the global environment. A cluster of workers like the one we just created is somewhat limited by the same issue. It can see variables in the same local environment, but not variables in the parent environment. If this sounds a little confusing...that's because it is, so let's illustrate with an example. Suppose, for instance, that I wanted to alter my previous trivial loop to add an integer, `x`, to each thing in my list rather than 1. It seemingly look pretty similar:
+Oftentimes, you'll find yourself with a function that takes awhile to run. If you need to run said function for a whole bunch of cases, parallelization could be the answer. For instance, let's suppose I have the following function:
 
 ```{r}
-my.list <- 1:10
-x <- 5
-my.list <- foreach(i = 1:length(my.list)) %dopar% {
-  my.list[i] <- my.list[i] + x
+delayFunction <- function(x){
+  Sys.sleep(5)
+  return(abs(round(100*x)))
 }
-unlist(my.list)
 ```
 
-This works just fine; the `foreach` and the `x` variable are both in the same local environment, so we're okay. However, we might want to wrap our `foreach` inside of a function that we can use repeatedly. So we could try something like this:
+This is admittedly a pretty dumb function; it tells the machine to delay for 5 seconds, then returns the rounded absolute value of a number, x. But it should at least illustrate the reason we parallelize. Let's first run this with a serial loop; we'll time execution of the function using the `system.time()` function, a useful little utility that I use from time to time. 
 
-```{r}
-stopCluster(cl)
+```{r cache = TRUE}
+set.seed(10)
+x <- rnorm(10)
+y <- numeric(length=10)
+system.time(for(i in 1:length(x)) {
+  y[i] <- delayFunction(x[i])
+}
+)
+```
 
-x <- 5 
-cl <- makeCluster(detectCores()-1)
+Now let's do exactly the same thing, but use a parallel structure with 3 cores:
+
+```{r cache = TRUE}
+cl <- makeCluster(detectCores() - 1)
 registerDoParallel(cl)
-my.list <- 1:10
-my.list <- foreach(i = 1:length(my.list)) %dopar% {
-  my.list[i] <- my.list[i] + x
+system.time(
+  z <- foreach(i = 1:length(x)) %dopar% {
+    delayFunction(x[i])
 }
-unlist(my.list)
-
+)
+stopCluster(cl)
 ```
+
+First things first: that's a pretty noticable improvement in speed, right? This was just a case of a silly delay function working on 10 variables, and we more than doubled our efficiency. Suppose you had a more complex function that took, say, a couple minutes per variable and needed to be run on a few thousand variables; suddenly, the 30 second speed-up we have becomes hours or even days shaved off your compute time. 
+
+You may have noticed that I assigned different variables for the output of the function; that's so we could verify that we get exactly the same thing, regardless of method:
+
+```{r}
+all(y == unlist(z))
+```
+
+I would also note that this method compares favorably to using `lapply` as well:
+
+```{r cache = TRUE}
+system.time(w <- unlist(lapply(x,delayFunction)))
+all(w == y)
+```
+
+So although the `lapply` method saves typing, it's clearly not saving time here. However, if you really want to, there are parallelized versions of the `apply` functions as well. I won't cover them here because I think `foreach` is generally sufficient for your purposes, but if you're curious, check out the documentation for `parLapply` and much more [here](https://stat.ethz.ch/R-manual/R-devel/library/parallel/html/clusterApply.html).
+
+Cool, so to sum up, we shaved some time off using our function and still got the same answer. Even though we used an admittedly dumb function, you can imagine that this would come in pretty handy if you had a longer, more complicated function. 

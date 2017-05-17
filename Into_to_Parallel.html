@@ -118,7 +118,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Intro to Parallel Programming in R</h1>
 <h4 class="author"><em>Matt Richards</em></h4>
-<h4 class="date"><em>5/12/2017</em></h4>
+<h4 class="date"><em>5/17/2017</em></h4>
 
 </div>
 
@@ -138,13 +138,12 @@ $(document).ready(function () {
 </div>
 <div id="the-basic-workflow" class="section level2">
 <h2>The basic workflow</h2>
-<p>I would summarize running a parallel process as the following:</p>
+<p>I would summarize running a parallel process as essentially a 2-step process:</p>
 <ol style="list-style-type: decimal">
-<li>Designate your workers and register a cluster</li>
-<li>Pass any necessary information into your cluster</li>
+<li>Setup and register a cluster</li>
 <li>Run your operations in loop-like notation</li>
 </ol>
-<p>I’ll go through each of these steps separately, then we’ll put them together for some examples</p>
+<p>I’ll go through each of these steps separately, then we’ll put them together for a few quick examples</p>
 <div id="registering-a-cluster" class="section level3">
 <h3>Registering a cluster</h3>
 <p>Your machine has multiple cores, but it won’t know to use them in parallel unless you tell it to. We’ll do this using the <code>makeCluster</code> command to tell our machine to create a computational cluster that runs cores in parallel. But wait! How many cores should we use? It helps to know how many cores we have at our disposal, a figure we can obtain using <code>detectCores()</code>:</p>
@@ -160,7 +159,7 @@ cl</code></pre>
 </div>
 <div id="run-your-operations-like-a-loop" class="section level3">
 <h3>Run your operations like a loop</h3>
-<p>If you look at our list of steps, you’ll notice I just skipped from #1 to #3; there’s a reason for that, and I’ll get to it shortly, but lets talk now about how to actually use our cluster. Though there are multiple ways of running parallel processes, we’ll be using the <code>foreach</code> package, which was already loaded with <code>doParallel</code>. The <code>foreach</code> function looks a lot like a <code>for</code> loop, with a few differences. For instance, if I wanted to use a <code>for</code> loop to do something simple like, say, take a short list of numbers and increment each number by 1, I could do something like this:</p>
+<p>Though there are multiple ways of running parallel processes, we’ll be using the <code>foreach</code> package, which was already loaded with <code>doParallel</code>. The <code>foreach</code> function looks a lot like a <code>for</code> loop, with a few differences. For instance, if I wanted to use a <code>for</code> loop to do something simple like, say, take a short list of numbers and increment each number by 1, I could do something like this:</p>
 <pre class="r"><code>my.list &lt;- 1:10
 for(i in 1:length(my.list)){
   my.list[i] &lt;- my.list[i] + 1
@@ -174,37 +173,58 @@ my.list &lt;- foreach(i = 1:length(my.list)) %dopar% {
 }
 unlist(my.list)</code></pre>
 <pre><code>##  [1]  2  3  4  5  6  7  8  9 10 11</code></pre>
+<pre class="r"><code>stopCluster(cl)</code></pre>
 <p>Some things to note here:</p>
 <ul>
 <li>The <code>foreach</code> declaration uses the <code>i =</code> convention rather than <code>i in</code> convention</li>
 <li>The <code>%dopar%</code> statement is critical; you can alternatively say <code>%do%</code> instead, but then it won’t run in parallel</li>
 <li>The <code>foreach</code> method requires that I assign an output value; if I don’t, I won’t capture my output</li>
 <li>Using <code>foreach</code> returns a list</li>
+<li>A <code>foreach</code> “loop” operates like a function, returning the last statement or a value captured using <code>return(value)</code></li>
+<li>I used the <code>stopCluster</code> function at the end to terminate the cluster, preventing it from possibly gumming up the works</li>
 </ul>
 <p>Overall, using parallel processing requires a bit more typing than regular processing, so you wouldn’t ever use it for something as trivial as this. But what you invest in setup can payoff quite a bit if you’re doing some big, time-intensive task.</p>
 </div>
-<div id="pass-in-information" class="section level3">
-<h3>Pass in information</h3>
-<p>Now that I’ve briefly shown you how a cluster works, lets go back to Step #2, “Passing in Information”. In the Intermediate R course on DataCamp, we briefly mentioned variable scope when talking about writing functions. The basic premise is that our function can use whatever variable names it wants, but that these variables won’t visible to the global environment. A cluster of workers like the one we just created is somewhat limited by the same issue. It can see variables in the same local environment, but not variables in the parent environment. If this sounds a little confusing…that’s because it is, so let’s illustrate with an example. Suppose, for instance, that I wanted to alter my previous trivial loop to add an integer, <code>x</code>, to each thing in my list rather than 1. It seemingly look pretty similar:</p>
-<pre class="r"><code>my.list &lt;- 1:10
-x &lt;- 5
-my.list &lt;- foreach(i = 1:length(my.list)) %dopar% {
-  my.list[i] &lt;- my.list[i] + x
+<div id="another-example" class="section level3">
+<h3>Another Example</h3>
+<p>Oftentimes, you’ll find yourself with a function that takes awhile to run. If you need to run said function for a whole bunch of cases, parallelization could be the answer. For instance, let’s suppose I have the following function:</p>
+<pre class="r"><code>delayFunction &lt;- function(x){
+  Sys.sleep(5)
+  return(abs(round(100*x)))
+}</code></pre>
+<p>This is admittedly a pretty dumb function; it tells the machine to delay for 5 seconds, then returns the rounded absolute value of a number, x. But it should at least illustrate the reason we parallelize. Let’s first run this with a serial loop; we’ll time execution of the function using the <code>system.time()</code> function, a useful little utility that I use from time to time.</p>
+<pre class="r"><code>set.seed(10)
+x &lt;- rnorm(10)
+y &lt;- numeric(length=10)
+system.time(for(i in 1:length(x)) {
+  y[i] &lt;- delayFunction(x[i])
 }
-unlist(my.list)</code></pre>
-<pre><code>##  [1]  6  7  8  9 10 11 12 13 14 15</code></pre>
-<p>This works just fine; the <code>foreach</code> and the <code>x</code> variable are both in the same local environment, so we’re okay. However, we might want to wrap our <code>foreach</code> inside of a function that we can use repeatedly. So we could try something like this:</p>
-<pre class="r"><code>stopCluster(cl)
-
-x &lt;- 5 
-cl &lt;- makeCluster(detectCores()-1)
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.005   0.000  50.039</code></pre>
+<p>Now let’s do exactly the same thing, but use a parallel structure with 3 cores:</p>
+<pre class="r"><code>cl &lt;- makeCluster(detectCores() - 1)
 registerDoParallel(cl)
-my.list &lt;- 1:10
-my.list &lt;- foreach(i = 1:length(my.list)) %dopar% {
-  my.list[i] &lt;- my.list[i] + x
+system.time(
+  z &lt;- foreach(i = 1:length(x)) %dopar% {
+    delayFunction(x[i])
 }
-unlist(my.list)</code></pre>
-<pre><code>##  [1]  6  7  8  9 10 11 12 13 14 15</code></pre>
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.129   0.005  20.158</code></pre>
+<pre class="r"><code>stopCluster(cl)</code></pre>
+<p>First things first: that’s a pretty noticable improvement in speed, right? This was just a case of a silly delay function working on 10 variables, and we more than doubled our efficiency. Suppose you had a more complex function that took, say, a couple minutes per variable and needed to be run on a few thousand variables; suddenly, the 30 second speed-up we have becomes hours or even days shaved off your compute time.</p>
+<p>You may have noticed that I assigned different variables for the output of the function; that’s so we could verify that we get exactly the same thing, regardless of method:</p>
+<pre class="r"><code>all(y == unlist(z))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>I would also note that this method compares favorably to using <code>lapply</code> as well:</p>
+<pre class="r"><code>system.time(w &lt;- unlist(lapply(x,delayFunction)))</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.002   0.000  50.037</code></pre>
+<pre class="r"><code>all(w == y)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>So although the <code>lapply</code> method saves typing, it’s clearly not saving time here. However, if you really want to, there are parallelized versions of the <code>apply</code> functions as well. I won’t cover them here because I think <code>foreach</code> is generally sufficient for your purposes, but if you’re curious, check out the documentation for <code>parLapply</code> and much more <a href="https://stat.ethz.ch/R-manual/R-devel/library/parallel/html/clusterApply.html">here</a>.</p>
+<p>Cool, so to sum up, we shaved some time off using our function and still got the same answer. Even though we used an admittedly dumb function, you can imagine that this would come in pretty handy if you had a longer, more complicated function.</p>
 </div>
 </div>
 
