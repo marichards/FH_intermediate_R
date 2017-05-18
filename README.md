@@ -45,3 +45,6 @@ Date |  Room #
     - [Video 1](https://www.youtube.com/watch?v=tD8QZVRftDE)
     
     - [Video 2](https://www.youtube.com/watch?v=_i5n9lu43bc)
+    
+- For the in-class activity, we'll be using the KEGG compounds data which you can download [here](https://github.com/marichards/FH_intermediate_R/raw/master/kegg_compounds.txt)
+- Instructions can be found in a Jupyter Notebook [here](http://nbviewer.jupyter.org/github/marichards/FH_Intermediate_R/blob/master/Week_5_In_Class_Work.ipynb)
