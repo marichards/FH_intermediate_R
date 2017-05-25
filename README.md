@@ -53,4 +53,5 @@ Date |  Room #
 
 - During class, we'll be doing some analysis on breast cancer data and creating short reports in R Markdown. You can find the description of the task [here](https://marichards.github.io/FH_intermediate_R/Intro_to_Markdown.html)
 - We'll also touch on Jupyter notebooks and, time allowing, we'll create one in class where we'll do some more text manipulation. If you have yet to install Jupyter, I recommend using [Anaconda](https://www.continuum.io/downloads). 
+- The data we'll use in Jupyter are motif records from the [JASPAR](http://jaspar.genereg.net) and [HOMER](http://homer.ucsd.edu/homer/) databases. 
 
