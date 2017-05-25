@@ -20,7 +20,7 @@ Date |  Room #
 5/11 | B1-072/074
 5/18 | M4-A823
 5/25 | M3-C204
-6/1 | M3-C204
+6/8 | TBA
 
 ### Week 2 Materials
 
@@ -48,3 +48,9 @@ Date |  Room #
     
 - For the in-class activity, we'll be using the KEGG compounds data which you can download [here](https://github.com/marichards/FH_intermediate_R/raw/master/keggcompounds.txt)
 - Instructions can be found in a Jupyter Notebook [here](http://nbviewer.jupyter.org/github/marichards/FH_Intermediate_R/blob/master/Week_5_In_Class_Work.ipynb)
+
+### Week 6
+
+- During class, we'll be doing some analysis on breast cancer data and creating short reports in R Markdown. You can find the description of the task [here](https://marichards.github.io/FH_intermediate_R/Intro_to_Markdown.html)
+- We'll also touch on Jupyter notebooks and, time allowing, we'll create one in class where we'll do some more text manipulation. If you have yet to install Jupyter, I recommend using [Anaconda](https://www.continuum.io/downloads). 
+
