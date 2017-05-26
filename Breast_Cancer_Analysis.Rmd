@@ -1,0 +1,87 @@
+---
+title: "Breast Cancer Analysis"
+author: "Me"
+date: "5/25/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Exploration
+
+The following chunk downloads and reads the data, then changes the names to sensible ones. The top 6 rows are then printed. 
+
+```{r message=FALSE}
+library(dplyr); library(ggplot2)
+url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data"
+download.file(url = url, destfile = "./breastcancerdata.csv")
+cancer.data <- read.csv("./breastcancerdata.csv")
+names(cancer.data) <- c("Sample.code","Clump.Thickness", "Cell.Size.Unif","Cell.Shape.Unif",
+                        "Marginal.Adhesion","Epit.Cell.Size","Bare.Nuclei","BlandChrom",
+                        "NormalNucleoli","Mitoses", "Class")
+head(cancer.data)
+
+```
+
+I also added a column to clarify malignant v. benign and got rid of a couple of columns, then made the added column into a factor variable. 
+
+```{r}
+
+cancer.data <- cancer.data %>% 
+  mutate(Class.Name = ifelse( Class == 2, "Benign", "Malignant")) %>%
+  select(2:10,12)
+cancer.data$Class.Name <- factor(cancer.data$Class.Name)
+
+```
+
+Now then, let's look at some summary statistics
+
+```{r}
+
+summary(cancer.data)
+
+```
+
+## Short Analysis
+
+I'm going to go for low-hanging fruit and look at just one of the predictors, clump thickness. So I'll squish down my columns even more:
+
+```{r}
+
+cancer.data <- select(cancer.data, Clump.Thickness, Class.Name)
+
+```
+
+What sort of effect may be going on? Let's make a boxplot to find out:
+
+```{r}
+
+g <- ggplot(cancer.data, aes(Class.Name, Clump.Thickness))
+g + geom_boxplot()
+
+```
+
+Looks like a definite difference; let's make histogram to illustrate it differently:
+
+```{r}
+
+g <- ggplot(cancer.data, aes(Clump.Thickness))
+g + geom_histogram(aes(fill = Class.Name), bins = 10) 
+            
+
+```
+
+Just for fun, I'm also going to build a quick decision tree:
+
+```{r message = FALSE}
+
+library(rpart)
+
+fit <- rpart(Class.Name ~ Clump.Thickness, method = "class", data = cancer.data)
+summary(fit)
+
+```
+
+As shown by my little tree, I have a split point at Clump Thickness of 6.5; anything below is predicted as Benign, anything above is predicted as Malignant. It's not a perfect model, but it's a useful coarse predictor. And it shows that I expect that with increasing clump thickness, there is incresing likelihood of malignancy, with over 96% probability of malignancy over a classification of 6.5. 
