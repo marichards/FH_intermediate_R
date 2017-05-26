@@ -52,6 +52,8 @@ Date |  Room #
 ### Week 6
 
 - During class, we'll be doing some analysis on breast cancer data and creating short reports in R Markdown. You can find the description of the task [here](https://marichards.github.io/FH_intermediate_R/Intro_to_Markdown.html)
+- I created an example markdown document that you can take a look at if you'd like some guidance. You can check out the HTML version [here](https://marichards.github.io/FH_intermediate_R/Breast_Cancer_Analysis.html), but if you want to see the actual markdown, you should grab the markdown version [here](https://github.com/marichards/FH_intermediate_R/blob/master/Breast_Cancer_Analysis.Rmd) and take a look at it in RStudio. 
+
 - We'll also touch on Jupyter notebooks and, time allowing, we'll create one in class where we'll do some more text manipulation. If you have yet to install Jupyter, I recommend using [Anaconda](https://www.continuum.io/downloads). 
 - The data we'll use in Jupyter are motif records from the [JASPAR](http://jaspar.genereg.net) and [HOMER](http://homer.ucsd.edu/homer/) databases. 
 - During class, I created a Jupyter notebook with brief instructions for comparing transcription factors from the 2 above motif databases. I encourage you to download or copy my notebook so you can attempt the exercise within the Jupyter framework. The notebook is [here](https://github.com/marichards/FH_intermediate_R/blob/master/In-Class%20Notebook.ipynb).
