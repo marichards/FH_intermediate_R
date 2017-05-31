@@ -20,7 +20,7 @@ Date |  Room #
 5/11 | B1-072/074
 5/18 | M4-A823
 5/25 | M3-C204
-6/8 | TBA
+6/8 | M3-C204
 
 ### Week 2 Materials
 
