@@ -58,3 +58,7 @@ Date |  Room #
 - The data we'll use in Jupyter are motif records from the [JASPAR](http://jaspar.genereg.net) and [HOMER](http://homer.ucsd.edu/homer/) databases. 
 - During class, I created a Jupyter notebook with brief instructions for comparing transcription factors from the 2 above motif databases. I encourage you to download or copy my notebook so you can attempt the exercise within the Jupyter framework. The notebook is [here](https://github.com/marichards/FH_intermediate_R/blob/master/In-Class%20Notebook.ipynb).
 
+## Week 7
+
+- For the final class, we'll be using the Harvard sentences dataset, which can be found [here](http://www.cs.cmu.edu/afs/cs.cmu.edu/project/fgdata/OldFiles/Recorder.app/utterances/Type1/harvsents.txt). This dataset contains 720 sentences
+- For this week's in-class assignment, we want to create a reproducible analysis of the words and letters in the Harvard sentences dataset. You can use RMarkdown or Jupyter to do this analysis and you are free to use whatever packages and methods work for you. Your final product should contain at least 2 figures, though they can be of any type. 
