@@ -1,0 +1,147 @@
+---
+title: "Harvard_Sentence_Analysis"
+author: "Me"
+date: "6/8/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Intro and Data Acquisition
+
+This is an example of the in-class task for Week 7. Your code may look different from this and your figures may differ as well based upon what you choose to use. The data, however, should be the same. We will begin by downloading and reading the data:
+
+```{r cache=TRUE}
+download.file(url = "http://www.cs.cmu.edu/afs/cs.cmu.edu/project/fgdata/OldFiles/Recorder.app/utterances/Type1/harvsents.txt", 
+              destfile = "./Harvard_Sentences.txt")
+harvard.raw <- readLines(con = "./Harvard_Sentences.txt")
+
+```
+
+Here are the first handful of lines:
+
+```{r}
+
+head(harvard.raw)
+
+```
+
+## Cleaning and Dividing into Words
+
+Looking at the data, there are 72 different lines that start with "H# Harvard Sentences"; we don't want any of those lines. We also don't want punctuation or the number/dot combinations at the start of each line. Let's get rid of these things. 
+
+First, we'll remove the "H# Harvard Sentences" using str_detect (there are other ways to do this too):
+
+```{r message=FALSE}
+library(stringr)
+bad.lines <- str_detect(harvard.raw, "Harvard Sentences")
+sum(bad.lines)
+harvard <- harvard.raw[!bad.lines]
+head(harvard,10)
+```
+
+As you can see, there were 72 of these "bad lines" that we got rid of and they appear to be gone now. We'll now turn our attention to the periods, which we don't want either. These are easily removed using `str_replace_all`
+
+```{r}
+
+harvard <- str_replace_all(harvard, fixed("."), "")
+head(harvard,10)
+
+```
+
+The periods are now gone; we only have the leading spaces + numbers and the trailing spaces to take care of. We'll again remove them, this time using `str_replace` because each line should only have one leading and one trailing group at most. We're also going to dip into regular expressions here to tell our code to look only at the start or the end, plus we'll also do so to tell the code to remove 1+ numbers at the start. First, let's do the leading bits:
+
+```{r}
+
+harvard <- str_replace(harvard, "^ ?[\\d]+ ","")
+head(harvard,10)
+
+```
+
+You'll notice I looked at the top 10 things just to make sure that all possible line numbers were accounted for. Now let's remove any trailing spaces:
+
+```{r}
+
+harvard <- str_replace(harvard, " $","")
+head(harvard,10)
+
+```
+
+Great, so we've now got our sentences down to only words separated by spaces. There's one more thing though; we need to make sure that upper/lower case isn't a problem, so let's put everything in lowercase using the `tolower` command:
+
+```{r}
+
+harvard <- tolower(harvard)
+head(harvard,10)
+```
+
+## Word Splitting and Plotting
+
+Now that we have only words separated by spaces, we can quickly split into words using `str_split`; this gives a list, so we'll unlist the output and get a character vector instead: 
+
+```{r}
+
+all.words <- unlist(str_split(harvard, " "))
+head(all.words)
+
+```
+
+We have a character vector of words, but we don't have the frequencies. Luckily, we can quickly get these using `table`:
+
+```{r}
+word.df <- data.frame(table(all.words))
+```
+
+Using our old friend `dplyr`, let's sort this table and then we'll plot the top 10
+
+```{r message=FALSE}
+library(dplyr)
+word.df <- arrange(word.df, desc(Freq))
+head(word.df)
+```
+
+Unsurprisingly, the top words are all small, common ones. Let's finish by plotting a bar chart:
+
+```{r}
+with(head(word.df, 10), barplot(height=Freq, names.arg = all.words, col = 1:10))
+```
+
+## Character Splitting and Plotting
+
+Working with the characters themselves is more straightforward than you might think; using `str_split`, you can quickly split on an empty string pattern, which will break up all the characters in a string. So using our `all.words` object, we can split into characters by doing the following:
+
+```{r}
+all.characters <- unlist(str_split(all.words, pattern = ""))
+head(all.characters, 20)
+```
+
+Of course, it's always good to make sure we're getting the right output, so we can check to make sure this has the right number of characters in it. We'll count the number of characters in each word and sum them up, then compare that to the length of our new vector:
+
+```{r}
+
+character.sums <- str_length(all.words)
+sum(character.sums) == length(all.characters)
+```
+
+Great, we've got our confirmation, so all that's left to do is plot it out. This time we've got 26 letters plus a few punctuation marks to deal with instead of thousands of words, so I want to see them all. I'll do so using a horizontal bar plot. But first, let's create our data frame using `table` as before:
+
+```{r}
+
+character.df <- data.frame(table(all.characters))
+arrange(character.df, all.characters)
+```
+
+As you can see, there's a few bits of punctuation lying around, but that's quite alright. Let's plot it out and see what our frequencies look like; we'll do so in order of frequency:
+
+```{r fig.height = 10}
+character.df <- arrange(character.df, Freq)
+par(las = 2)
+with(character.df, barplot(height = Freq, 
+                           names.arg = all.characters,
+                           horiz = TRUE,
+                           col=1:29))
+```
+
+The plot clearly shows that "e" is the most common character, followed by "t", "a", and then "h". The "h" is somewhat unexpected, but given the prevalence of "the" in my word frequencies, this makes sense. 
