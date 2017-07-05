@@ -1,6 +1,6 @@
 ---
-title: "Intro to Github"
-author: "Me"
+title: "Short Intro to Github"
+author: "Matthew Richards"
 date: "7/3/2017"
 output: html_document
 ---
@@ -13,9 +13,9 @@ For this class, I'll be creating and hosting material using [Github](https://git
 
 As a note, there is a good general introduction to Git/Github located [here](http://product.hubspot.com/blog/git-and-github-tutorial-for-beginners) that I'd recommend looking at if you want to learn more about the two tools. Also, a quick clarification on nomenclature:
 
-* Git is a service used for version control that can all be performed locally. Essentially, you use Git to take snapshots of your files every now and then so that if you make changes that you don't like, you can easily rewind to the previous versions. 
+* **Git** is a service used for version control that can all be performed locally. Essentially, you use Git to take snapshots of your files every now and then so that if you make changes that you don't like, you can easily rewind to the previous versions. 
 
-* Github is an online service that allows you to take your local repositories (created with Git) and sync them online. This facilitates sharing and collaboration, as others can now "clone" your repository to access code you've written and can also suggest changes or updates to it. 
+* **Github** is an online service that allows you to take your local repositories (created with Git) and sync them online. This facilitates sharing and collaboration, as others can now "clone" your repository to access code you've written and can also suggest changes or updates to it. 
 
 # Cloning a Repository
 
@@ -27,18 +27,13 @@ git clone https://github.com/marichards/FH_intermediate_R.git
 
 This is the exact command you'll run to clone the class repository; for another repository, you'll simply change the URL. You can always find the specific URL in the Github repository. For instance, the class repository is [here](https://github.com/marichards/FH_intermediate_R) and the green "Clone or download" button contains the URL for cloning. 
 
-Once you run the command, your machine will create a local copy of the repository. The time required depends on the repository; large repositories can take a while, but the class one is pretty small and should only take a handful of seconds. 
+Once you run the command, your machine will create a local copy of the repository. The time required depends on the repository; large repositories can take a while, but the class one is pretty small and should only take a handful of seconds. After it's finished, you can now browse the directory of files and access whatever you want; it's effectively yours. 
 
-```{r cars}
-summary(cars)
-```
+# Updating a Repository
 
-## Including Plots
+As this class (or any Github-hosted project) forges on, content in the repository will necessarily change. Code will be updated, documents will be created, and other documents or directories may be deleted or changed. You'll want to be able to grab these changes as you go along, which you can do using a `git pull` command. Do the following:
 
-You can also embed plots, for example:
+1. Navigate into your repository (mine is in `Documents/Github/FH_Intermediate_R`)
+2. Run `git pull`
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+That's it, assuming you haven't made any local changes to the repository. If you have, there can be conflicts between your local copy and the online (remote) copy. My recommendation for this class is to leave the files themselves alone and just copy anything you want to edit into another directory. The guide I linked earlier has more information on things like conflicts and merging, but we shouldn't need anything like that in this class. 
