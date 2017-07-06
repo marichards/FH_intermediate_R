@@ -4,6 +4,7 @@ This is the portal to Intermediate R, a class in the [Fredhutch.io series](http:
 
 - [Introductory slides](https://marichards.github.io/FH_intermediate_R/Intermediate_R_Intro.html)
 - [Instructions on Using ```swirl```](https://marichards.github.io/FH_intermediate_R/User_Guides/Using_swirl.html)
+- [A Brief Intro to Git/Github](https://marichards.github.io/FH_intermediate_R/User_Guides/Intro_to_Github.html)
 
 As the course goes on, you can expect to find more resources here. In particular, I will be posting in-class activities and some sample solutions each week. 
 
