@@ -27,4 +27,4 @@ The following space includes resources for each week of the course and will be u
 
 ### Week 1 
 
-- A static view of the [In-Class Exercises]() will appear here soon. 
+- Here is a link to the [Week 1 Materials](https://marichards.github.io/FH_intermediate_R/Week_1/Week_1_Materials.html). These materials quickly summarize the important takeaways from the week's DataCamp lessons, add a couple new pieces of information, and provide some practice exercises for the class session. 
