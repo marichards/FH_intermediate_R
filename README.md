@@ -11,15 +11,15 @@ As the course goes on, you can expect to find more resources here. In particular
 
 The class is from 2-4 PM on Thursday afternoons and runs for 7 weeks. Our room  should be consistent for all 7 weeks, but if there are unexpected changes, I will update them here. Here is the most current schedule:
 
-Date |  Room # 
----- | --------
-7/6 | M3-A805
-7/13 | M3-A805
-7/20 | M3-A805
-7/27 | M3-A805
-8/3 | M3-A805
-8/10 | M3-A805
-8/17 | M3-A805
+Date |  Room # | Topic
+---- | -------- | ---------
+7/6 | M3-A805 | Intro, Control Flow
+7/13 | M3-A805 | Functions, The "apply" Family, Misc.
+7/20 | M3-A805 | dplyr: select/filter/mutate/arrange
+7/27 | M3-A805 | dplyr: summarise/group_by
+8/3 | M3-A805 | dplyr: Simple Joins
+8/10 | M3-A805 | dplyr: Advanced Joins
+8/17 | M3-A805 | RMarkdown
 
 ## Weekly Materials
 
