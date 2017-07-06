@@ -1,0 +1,70 @@
+---
+title: "Intro to Markdown"
+author: "Matt Richards"
+date: "5/25/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Dataset Intro
+
+In the past week, we've had a big change in the material, switching from coding-focused tasks to creating markdown documents. While the concepts in these final 2 weeks won't necessarily include new data analysis functions, they're aimed at giving you tools to create easily reproducible analyses. In particular, I find this quite useful for embedding code and if you ever find yourself writing a package vignette or a tutorial for using a piece of R, markdown is your friend. 
+
+For today's in-class activity, we'll use a breast cancer dataset from Wisconsin hosted [here](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Original)). You can go get the data and download it locally on your own, but I like to build the downloading part into my R script itself. I'm not going to show those commands here because I think you're all capable of figuring out the commands on your own. But here's the result of downloading and reading in the data file, using the `head` command to show the top of the file:
+
+```{r message=FALSE, echo = FALSE}
+url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data"
+download.file(url = url, destfile = "./breastcancerdata.csv")
+cancer.data <- read.csv("./breastcancerdata.csv")
+names(cancer.data) <- c("Sample.code","Clump.Thickness", "Cell.Size.Unif","Cell.Shape.Unif",
+                        "Marginal.Adhesion","Epit.Cell.Size","Bare.Nuclei","BlandChrom",
+                        "NormalNucleoli","Mitoses", "Class")
+head(cancer.data)
+
+```
+
+## Some Extra Markdown Pointers
+
+Here's a handful of things I didn't see in the lecture notes that might come in handy:
+
+* Whitespace matters; I generally err on the side of putting a blank line in between all markdown elements, lest they run together and ruin each other. For instance, if I forget the blank line before a header, it doesn't come out as I expected:
+
+Some paragraph
+## This section header is ruined 
+
+* The previous bullet point also applies to things like lists; leave spaces in between your in-line markdown and the surrounding text, or else you might end up making a failed attempt at a list:
+
+1.This
+2.Is
+3.Wrong
+
+* On the flip side, spacing matters in the opposite matter for hyperlinks, a mistake I seem to make a lot. A hyperlink must have square brackets around the text followed immediately by the URL in regular parentheses. So this doesn't work; the link is still clickable, but the text I wanted isn't part of the link:
+
+[Failed Hyperlink] (https://fail.com)
+
+* One last thing: of the options they showed for the code chunks, the important one I think they skipped over is the `cache` option. If you specify it as `TRUE`, your code output for that chunk is saved, which is really useful if it's a long bit of output. For instance, if you take a look at my [Intro_to_Parallel](https://github.com/marichards/FH_intermediate_R/blob/master/Into_to_Parallel.Rmd) document on Github, you'll notice that I carry out some calculations that take 50 seconds or so. I didn't really want to wait around for R to re-do those calculations each time I re-knit the document, so I set `cache = TRUE` in those chunks. Depending on your code chunks, you may find this very useful from time to time. 
+
+## Your Tasks
+
+Rather than dictating exactly what we're looking for this week, I want to keep things a bit more open-ended. You've got the Wisconsin breast cancer dataset, which has a bunch of metrics including a classification as "benign" or "malignant". This classification is the outcome we're most interested in; we don't necessarily have to make a predictive model, but we'd like to know what factors are associated with cancer malignancy. I can think of a whole bunch of things you could look at, but you can pick whatever speaks to you, so long as it has to do with the cancer classification. Using the dataset, create a short formatted analysis including:
+
+* Some basic summary statistics of the raw data (please re-title the data columns!)
+* At least 1 plot
+* A short analysis of something in the dataset that corresponds to cancer malignancy classification
+* At least 1 block of R code that results in numerical output
+
+That's it for the guidelines; however, I reserve the right to add one or two if I stumble across anything I've forgotten. As further guidance, here are a handful of functions you may find useful:
+
+* `boxplot`
+* `barplot`
+* `qplot`
+* `ggplot`
+* `cor`
+* `summary`
+* `table`
+* `lm` 
+
+The text need not be particularly long; just enough to describe what you're doing and your pertinent findings. Good luck!

@@ -1,0 +1,80 @@
+---
+title: "Intermediate R Introduction"
+author: "Matthew Richards"
+date: "April 20, 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## A Quick "About Me"
+
+- Name
+- Current Role
+- Prior Programming Experience
+- Experience with R
+- Something Fun?
+
+## Class Outline
+
+- Manipulating Data with dplyr
+- Control Structures
+- The 'apply' Family
+- R Utilities and Efficiency
+- Using R Markdown for Reproducible Documents
+- Git and Github for Version Control 
+
+## Course Mechanics
+
+As with any coding, you will learn MUCH more by doing than by watching
+
+```{r echo=FALSE}
+slices <- c(5, 20, 100)
+lbls <- c("In-Class Time","DataCamp Lessons","Self-Paced Practice/Projects")
+pie(slices, labels = lbls, main="Potential for Learning")
+
+```
+
+
+## Course Goals
+
+By the end of this course, you should be able to:
+
+- Confidently use dplyr to extract information from data frames
+- Perform non-trivial operations through use of loops and conditionals
+- Understand the efficiency advantages of using "apply" functions and parallel processing
+- Create reproducible markdown documents with embedded R code
+- Manage your code using Github repositories
+
+## Getting help
+
+A good rule of thumb is to proceed down this list
+
+- Use the *"?"* or *"??"* operators
+- Ask the internet
+ - Google
+ - StackOverflow
+ - R-specific sites
+- Ask your instructor
+- Ask a friend who has expertise
+- Use a book
+
+## A Few Other Resources
+
+R is learned by doing; here are some possible avenues for more "doing":
+
+- Other DataCamp courses
+- *swirl()*
+- Various "Intro to R" or "R Tutorial" sites
+- Start a project!
+
+## Today's Agenda
+
+- Intro Slides
+- Creation of class Github Repo
+- Review of Week 1 Assignment
+- Intro to *swirl()*
+- Looking into Week 2 Assignment
+

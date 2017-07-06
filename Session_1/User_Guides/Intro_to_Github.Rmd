@@ -1,0 +1,39 @@
+---
+title: "Short Intro to Github"
+author: "Matthew Richards"
+date: "7/3/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+For this class, I'll be creating and hosting material using [Github](https://github.com/marichards), a standard platform for collaboratively creating and sharing software projects. The [class website](https://marichards.github.io/FH_intermediate_R/) will contain all of the in-class activities I create as well as some helpful guides that you can peruse at any time.  While you could download each piece of material as we go along, the most reliable way to stay up-to-date is to "clone" the repository from Github to create a copy on your local machine and then periodically "pull" from the repository to update it. This can all be a bit confusing if you've never used Git/Github before, so we'll walk through this bit now.
+
+As a note, there is a good general introduction to Git/Github located [here](http://product.hubspot.com/blog/git-and-github-tutorial-for-beginners) that I'd recommend looking at if you want to learn more about the two tools. Also, a quick clarification on nomenclature:
+
+* **Git** is a service used for version control that can all be performed locally. Essentially, you use Git to take snapshots of your files every now and then so that if you make changes that you don't like, you can easily rewind to the previous versions. 
+
+* **Github** is an online service that allows you to take your local repositories (created with Git) and sync them online. This facilitates sharing and collaboration, as others can now "clone" your repository to access code you've written and can also suggest changes or updates to it. 
+
+# Cloning a Repository
+
+To get started, open up your command shell (I use plain Terminal on Mac or the Git Bash shell provided for Windows) and navigate to your chosen folder. I keep most of my repositories under `Documents/Github`, which is generally the default location. Once you're in the designated folder, run your cloning command:
+
+```
+git clone https://github.com/marichards/FH_intermediate_R.git
+```
+
+This is the exact command you'll run to clone the class repository; for another repository, you'll simply change the URL. You can always find the specific URL in the Github repository. For instance, the class repository is [here](https://github.com/marichards/FH_intermediate_R) and the green "Clone or download" button contains the URL for cloning. 
+
+Once you run the command, your machine will create a local copy of the repository. The time required depends on the repository; large repositories can take a while, but the class one is pretty small and should only take a handful of seconds. After it's finished, you can now browse the directory of files and access whatever you want; it's effectively yours. 
+
+# Updating a Repository
+
+As this class (or any Github-hosted project) forges on, content in the repository will necessarily change. Code will be updated, documents will be created, and other documents or directories may be deleted or changed. You'll want to be able to grab these changes as you go along, which you can do using a `git pull` command. Do the following:
+
+1. Navigate into your repository (mine is in `Documents/Github/FH_Intermediate_R`)
+2. Run `git pull`
+
+That's it, assuming you haven't made any local changes to the repository. If you have, there can be conflicts between your local copy and the online (remote) copy. My recommendation for this class is to leave the files themselves alone and just copy anything you want to edit into another directory. The guide I linked earlier has more information on things like conflicts and merging, but we shouldn't need anything like that in this class. 
