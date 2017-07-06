@@ -75,5 +75,4 @@ For these exercises, you'll want to download the Breast Cancer Dataset from UCI'
 * Uses the random integer to designate the appropriate chromosome and pastes it to the abbreviation `chr`
 * Outputs the random chromosome string (e.g. `chr8` or `chrY`)
 
-You may find the `sample()` function useful here. 
-
+You may find the `sample()` and `paste0()` functions useful here. 
