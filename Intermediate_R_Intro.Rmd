@@ -1,7 +1,7 @@
 ---
 title: "Intermediate R Introduction"
 author: "Matthew Richards"
-date: "April 20, 2017"
+date: "July 6, 2017"
 output: ioslides_presentation
 ---
 
@@ -19,12 +19,12 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Class Outline
 
-- Manipulating Data with dplyr
-- Control Structures
-- The 'apply' Family
-- R Utilities and Efficiency
-- Using R Markdown for Reproducible Documents
 - Git and Github for Version Control 
+- Conditionals and Control Structures
+- The 'apply' Family, Functions, and Utilities
+- Manipulating Data with dplyr
+- Joining Data with dplyr
+- Using R Markdown for Reproducible Documents
 
 ## Course Mechanics
 
@@ -37,20 +37,20 @@ pie(slices, labels = lbls, main="Potential for Learning")
 
 ```
 
-
 ## Course Goals
 
 By the end of this course, you should be able to:
 
-- Confidently use dplyr to extract information from data frames
 - Perform non-trivial operations through use of loops and conditionals
 - Understand the efficiency advantages of using "apply" functions and parallel processing
+- Confidently use dplyr to extract information from data frames
+- Join data frames together in different ways using dplyr
 - Create reproducible markdown documents with embedded R code
 - Manage your code using Github repositories
 
 ## Getting help
 
-A good rule of thumb is to proceed down this list
+A good rule of thumb is to proceed down this list in order
 
 - Use the *"?"* or *"??"* operators
 - Ask the internet
@@ -68,13 +68,13 @@ R is learned by doing; here are some possible avenues for more "doing":
 - Other DataCamp courses
 - *swirl()*
 - Various "Intro to R" or "R Tutorial" sites
-- Start a project!
+- Start a [project](https://marichards.shinyapps.io/abby_and_phil_food_map/)!
 
 ## Today's Agenda
 
 - Intro Slides
-- Creation of class Github Repo
-- Review of Week 1 Assignment
+- Accessing the class Github Repo
 - Intro to *swirl()*
-- Looking into Week 2 Assignment
+- Questions about Week 1 Assignment
+- Week 1 In-Class Activity
 
