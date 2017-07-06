@@ -61,7 +61,7 @@ ifelse(x >= 2, "Big","Little")
 
 ## Practice Exercises
 
-For these exercises, you'll want to download the Breast Cancer Dataset from UCI's machine learning repository. You can go straight to their repository [here](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Original) or, alternatively, it's on the class Github under `Datasets`. You should get the `breast-cancer-wisconsin.data` file from their data folder.
+For these exercises, you'll want to download the Breast Cancer Dataset from UCI's machine learning repository. You can go straight to their repository [here](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Original)) or, alternatively, it's on the class Github under `Datasets`. You should get the `breast-cancer-wisconsin.data` file from their data folder.
 
 1. Read the .csv file into R so you get a data frame, then give actual titles to the variables (columns) so you know what each column is. On the UCI website, there's more information on the names of each column. 
 
