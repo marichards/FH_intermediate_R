@@ -127,24 +127,66 @@ $(document).ready(function () {
 <h2>Week Overview</h2>
 <p>This was your first taste of DataCamp and, for some of you, your introduction to control flow. When I talk about “control flow”, I’m specifically talking about conditional statements and loops that allow you to dictate decision-making and repetition in your programming. In particular this week, we covered:</p>
 <ul>
-<li>Conditionals: a family of expressions that, when evaluated, result in a logical output. While typically mathematical, they don’t always have to me. A non-comprehensive list of some common expressions:
+<li>Conditionals: A family of expressions that, when evaluated, result in a logical output. While typically mathematical, they don’t always have to me. A non-comprehensive list of some common expressions:
 <ul>
-<li><code>a &gt; b</code></li>
-<li><code>a &lt; b</code></li>
-<li><code>a &gt;= b</code></li>
-<li><code>a &lt;= b</code></li>
-<li><code>a != b</code></li>
-<li><code>a == b</code></li>
-<li><code>a %in% b</code></li>
-<li><code>is.na(a)</code></li>
+<li><code>a &gt; b</code> a greater than b</li>
+<li><code>a &lt; b</code> a less than b</li>
+<li><code>a &gt;= b</code> a greater than or equal to b</li>
+<li><code>a &lt;= b</code> a less than or equal to b</li>
+<li><code>a != b</code> a not equal to b</li>
+<li><code>a == b</code> a is equal to b</li>
+<li><code>a %in% b</code> a is a member of b</li>
+<li><code>is.na(a)</code> a is NA</li>
 </ul></li>
+<li><code>if/else/else if</code>: a common control structure that uses conditional to determine whether or not to execute further statements</li>
+<li><code>for</code> loops: the iterative loop structure; evaluates a set of statements for every item in a specified list</li>
+<li><code>while</code> loops: a conditional loop structure; it continues evaluating its set of statements until a specified conditional is no longer true</li>
+<li><code>break</code> statements: allow you to terminate a loop or function, which can be especially useful when you’re using variable input types</li>
 </ul>
 </div>
 <div id="additional-material" class="section level2">
 <h2>Additional Material</h2>
+<div id="switchcase" class="section level3">
+<h3><code>Switch:Case</code></h3>
+<p>Another useful control structure is the <code>switch:case</code> struture, which is actually quite similar to the <code>if/else/else if</code> control structure. Rather than evaluating a conditional or series of conditionals, the <code>switch:case</code> structure has a pre-defined set of cases it looks for and returns different things based on the cases it encounters. It works something like this:</p>
+<pre class="r"><code>fruit &lt;- c(&quot;apple&quot;, &quot;banana&quot;)
+color &lt;- switch(fruit[1], 
+                &quot;apple&quot; = &quot;red&quot;,
+                &quot;banana&quot; = &quot;yellow&quot;,
+                &quot;durian&quot; = &quot;brown&quot;,
+                &quot;orange&quot; = &quot;orange&quot;)
+color</code></pre>
+<pre><code>## [1] &quot;red&quot;</code></pre>
+<p>Why use this instead of <code>if/else/else if</code>? I think it often comes down to personal preference, but here’s a couple reasons:</p>
+<ol style="list-style-type: decimal">
+<li>It’s often more concise and thus, more clear</li>
+<li>It’s a bit faster computationally</li>
+</ol>
+<p>On the other hand, <code>switch:case</code> tends to be less flexible than its counterpart, so it’s not generally quite as widely applicable. It’s designed for cases where the input (the first argument) can change and there’s a whole bunch of cases you want to account for.</p>
+</div>
+<div id="ifelse" class="section level3">
+<h3><code>ifelse()</code></h3>
+<p>This is just a compact version of the <code>if/else/else if</code> control structure and it’s quite useful for places where you just need a short test rather than drawn-out statements. Here is an example:</p>
+<pre class="r"><code>x &lt;- 1:3
+ifelse(x &gt;= 2, &quot;Big&quot;,&quot;Little&quot;)</code></pre>
+<pre><code>## [1] &quot;Little&quot; &quot;Big&quot;    &quot;Big&quot;</code></pre>
+</div>
 </div>
 <div id="practice-exercises" class="section level2">
 <h2>Practice Exercises</h2>
+<p>For these exercises, you’ll want to download the Breast Cancer Dataset from UCI’s machine learning repository. You can go straight to their repository [here](<a href="https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Original)" class="uri">https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Original)</a> or, alternatively, it’s on the class Github under <code>Datasets</code>. You should get the <code>breast-cancer-wisconsin.data</code> file from their data folder.</p>
+<ol style="list-style-type: decimal">
+<li><p>Read the .csv file into R so you get a data frame, then give actual titles to the variables (columns) so you know what each column is. On the UCI website, there’s more information on the names of each column.</p></li>
+<li><p>The final column of the dataset specifies tumor malignancy, but does so with an odd system of 2/4 being assigned to Benign/Malignant, respectively. Using the DataCamp control structures, add a new column to the data frame that explicitly says “Benign” or “Malignant” based on the existing column. The new column should be a <em>factor</em> variable. Check your results by using <code>summary()</code> to look at your new data frame</p></li>
+<li><p>Repeat exercise #2, but this time use <code>ifelse()</code> to accomplish your goal</p></li>
+<li><p>Here’s one from my own research: recently, we’ve been working with some DNA footprinting data on different chromosomes. We’d like to designate some chromosomes as something of a “training” set to establish a background level, but we want to do so randomly. We want a script that does the following:</p></li>
+</ol>
+<ul>
+<li>Creates a random integer from 1-24 (22 numbered chromosomes plus X and Y)</li>
+<li>Uses the random integer to designate the appropriate chromosome and pastes it to the abbreviation <code>chr</code></li>
+<li>Outputs the random chromosome string (e.g. <code>chr8</code> or <code>chrY</code>)</li>
+</ul>
+<p>You may find the <code>sample()</code> function useful here.</p>
 </div>
 
 
