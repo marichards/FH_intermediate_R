@@ -1,0 +1,31 @@
+---
+title: "Week 2 Materials"
+author: "Matt Richards"
+date: "7/13/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Week Overview
+
+Week 2, the second and final week of the DataCamp "Intermediate R" course, was sort of a mishmash of things. After starting with some very general concepts, we had sort of a miscellaneous section to end the section. Here are the big things we covered:
+
+* Functions: one of the most central concepts in all programming. Functions let you build modular pieces of code that you can then apply to lots of different scenarios. 
+
+* lapply: the commonly used "loop" function; you use it to apply a function to a list or vector and you **ALWAYS** get a list in return. 
+* sapply/vapply: variations on lapply that return other data types. The `sapply` simplifies it however it sees fit, so it can be a little less predictable than `vapply`, where you specify exactly the data type you want. 
+
+*
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

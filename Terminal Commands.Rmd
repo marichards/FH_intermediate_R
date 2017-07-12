@@ -1,0 +1,105 @@
+---
+title: "Terminal Commands"
+author: "Matt Richards"
+date: "7/12/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is a brief guide to a few commands in the terminal that should help you navigate enough to use Git without much issue:
+
+1. `pwd` stands for "print working directory" and does basically what it says. It's useful for figuring out what directory you're currently in. Run it simply, using just the command itself like so:
+
+```
+pwd
+```
+
+2. `cd` stands for "change directory" and, again, it basically does what it says. It's used for navigating between directories to get where you need to go. Run it using the command itself, then absolute or relative path. So if I'm in `/Users/matt/Documents` and want to get to `/Users/matt/Documents/Github`, I could do 2 things:
+
+```
+cd /Users/matt/Documents/Github
+cd Github
+```
+
+The first is the absolute pathway, the second is relative. At this point, it also bears mentioning the `.` and `..` operators:
+
+3. `.` stands for the current directory and helps specify relative path. This is useful not just in the terminal but also in coding with things like R. So in the `cd` demonstration, I could actually do a 3rd thing:
+
+```
+cd ./Github
+```
+
+That would work the same as the other 2 commands.
+
+4. `..` stands for the parent directory, meaning the directory one above where you are. So if I'm in `/Users/matt/Documents`, this is the `/Users/matt` directory. Again, it's really useful for specifying pathways for things like changing your directory. Let's assume I wanted to get to the `/Users/matt/Downloads` directory from `/Users/matt/Documents`; I could do that in a couple of ways:
+
+```
+cd ../Downloads
+cd /Users/matt/Downloads
+```
+
+The first command is the relative path and is quicker; the second command is the absolute path and should work regardless of which directory I'm in. 
+
+5. `mkdir` stands for "make directory" and allows you to make a new directory. Invoke it by typing the command, followed by the name of the directory you want to create. Note that you can create directories in places other than your current location, so I could do any of the following:
+
+```
+mkdir Test_Dir
+mkdir ../Test_Dir
+mkdir /Users/matt/Documents/Test_Dir
+```
+
+These all create a directory of the same name, but the location may vary based on where I am at the time. The final command creates the directory in a specific place because it's using an absolute path name
+
+6. `ls` lists all the things in a directory. By default it's your current directory, but you can do it for other directories too. So any of the following work:
+
+```
+ls
+ls ..
+ls /Users/matt/Documents
+```
+
+If you're interested in seeing more details than the file names themselves, there's optional arguments you can add to do that. For instance:
+
+```
+ls -a
+ls -l
+ls -h
+ls -lha
+```
+
+The 3 flags here all have different meanings: `-a` lists all files and directories, including hidden ones; `-` lists the files in long format, so it's 1 file/directory per line rather than a grid, and also lists some meta data; `-h` lists the files in human-readable format, which doesn't do much on its own but is useful when combined with `-l`. You can see the final command combines all 3 of these, so we'll see 1) All files, 2) Listed in long format with meta data, 3) And the meta data will be human-readable, so things like bytes will be converted to Mb or Gb based on size. 
+
+7. `mv` moves or renames a file, depending on how it's invoked. Say I have a file in `/Users/matt/Documents` called `file1.txt`; I can move the file by specifying a different directory as the 2nd argument:
+
+```
+mv file1.text ..
+mv file1.text Github/
+mv file1.text /Users/matt/Downloads/
+```
+
+I can also change the file name by specifying a different name instead of a directory; here's how I'd change it to `file2.txt`:
+
+```
+mv file1.text file2.text
+```
+
+8. `cp` copies a file using the same sort of invokation as `mv` uses to rename a file. So I'd do something like this:
+
+```
+cp file1.text ../file1.text
+cp file1.text ..
+```
+
+Both of these commands copy the file to the parent directory; I could also copy to the same directory I'm in but just change the name of the copy:
+
+```
+cp file1.text file2.text
+```
+
+***That should cover pretty much all the commands you might need for operating in the terminal, at least for the purposes of this class.*** 
+
+
+

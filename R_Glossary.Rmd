@@ -1,0 +1,71 @@
+---
+title: "R Glossary"
+author: "Matt Richards"
+date: "7/12/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This document is designed to aggregate a list of various functions in R that are really useful things to know, but may never show up in the DataCamp materials. This document should grow as class progresses. I'll try to divide the document into sections based on function type and give a brief description of each function. For more information, check the official R documentation (the `?` operator)
+
+### Directory Management
+
+* `getwd()` Get the working directory; prints out your current working directory (same as `pwd` in Linux)
+* `setwd()` Set the working directory; sets the current working directory to whatever directory you specify
+* `dir()` Prints out all the files in your current working directory
+* `list.files()` Same as `dir()`
+* `ls()` Print out all variables in your environment
+* `rm()` Remove from your environment whatever variables you specify
+
+### Downloading/Reading Files
+
+* `download.file()` Download a file from a specified URL to a specified location
+* `read.table()` Read in a tabular text file to produce a data frame
+* `read.csv()` Same as `read.table`, but with different defaults
+* `readLines()` Read in the supplied file as plain text
+
+### Generating, Combining and Separating Data
+
+* `sample()` Take a random sample of a supplied dataset
+* `rep()` Create replicates of a dataset
+* `subset()` Using conditional statements, take a portion of a data frame
+* `rnorm()` Generate a set of random standard normal numbers
+* `rbind()` Combine data by stacking rows on top of each other
+* `cbind()` Combine data by stacking columns next to each other
+* `paste()` Combine variables or vectors of variables and strings to create a new string or vector of strings; separate with " "
+* `paste0()` Same as `paste`, but don't separate the pasted arguments
+* `strsplit()` Split a string based on a supplied split type
+
+### Evaluating Data
+
+* `summary()` Summarize a dataset with representative statistics; this meansgiving mean/median/quantile data for numerics
+* `str()` Print out lots of useful summary data for a dataset
+* `length()` Find the length of a vector; be careful when using on multi-dimensional objects like data frames
+* `head()` Print out the first rows of the data (default is 6 rows)
+* `tail()` Print out the final rows of the data (default is 6 rows)
+* `print()` Print out the text or variable supplied
+* `names()` Access the names of a dataset; this is the column names for a data frame
+
+### Coercing Data Types
+
+* `as._____()` Coerce your current data to whatever follows `as`
+* `unlist()` Collapses a list object into something flat; what that "something" is depends on the data
+
+### Plotting
+
+* `plot()` Generate a scatterplot of data
+* `boxplot()` Generate a boxplot of data
+* `histogram()` Generate a histogram of data
+* `barplot()` Generate a barplot of data
+* `par()` Access plotting parameters for base plotting functions
+* `ggplot()` Create a ggplot object for Hadley-style plotting
+* `qplot()` Create a quick ggplot figure of data
+
+### Other
+
+* `with()` Specifies data to use for functions that follow it
