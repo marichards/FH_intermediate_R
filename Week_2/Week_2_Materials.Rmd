@@ -15,10 +15,61 @@ Week 2, the second and final week of the DataCamp "Intermediate R" course, was s
 
 * Functions: one of the most central concepts in all programming. Functions let you build modular pieces of code that you can then apply to lots of different scenarios. 
 
-* lapply: the commonly used "loop" function; you use it to apply a function to a list or vector and you **ALWAYS** get a list in return. 
-* sapply/vapply: variations on lapply that return other data types. The `sapply` simplifies it however it sees fit, so it can be a little less predictable than `vapply`, where you specify exactly the data type you want. 
+* `lapply`: the commonly used "loop" function; you use it to apply a function to a list or vector and you **ALWAYS** get a list in return. 
 
-*
+* `sapply/vapply`: variations on lapply that return other data types. The `sapply` simplifies it however it sees fit, so it can be a little less predictable than `vapply`, where you specify exactly the data type you want. 
+
+* `abs/sum/mean/round`: various mathematical utilities that do precisely what they say. These will come in handy all over the place as you build functions and scripts
+
+* `seq/rep/sort/rev/str/append/is.*/as.*/unlist`: various data utilities that allow you to generate, manipulate, and evaluate your data. Like the math utilities, these will frequently pop up in your functions and scripts
+
+* Regular expressions: a language of literal characters + metacharacters that allow you to search for and replace complex patterns in your data. 
+
+* `grep/grepl`: functions that match an expression to your data. The `grep` returns indices or values, whereas the `grepl` returns a logical vector
+
+* `sub/gsub`: functions that find and substitute an expression in your data. The `sub` does so for just the first occurence whereas the `gsub` does it for all occurences
+
+* Times/Dates: R has built-in data types to deal with times and dates, allowing you to figure out elapsed time and things of that nature. You can convert to/from dates, but you have to be careful of formatting. 
+
+## Additional Material: the `apply` functions
+
+I don't have much to add on functions; the oddest thing about the functions is getting used to default arguments and how they work. Instead, I'll briefly add some material about the `apply` family and then move on to a more involved discussion of regular expressions. 
+
+In addition to the 3 `apply` type functions you learned in DataCamp, there's 2 more that might come in useful. One is literally `apply`; it's a useful command if you're dealing with a matrix of data as it lets you perform a function on either the columns or rows of the matrix. For instance, say I wanted to take the product of each column; I could use `apply` to do that:
+
+```{r}
+M <- matrix(1:10,nrow=2)
+M
+apply(M, 2, prod)
+```
+
+The second argument here specifies the "margin"; that's 1 for rows, 2 for columns. So what I've said here is take the product (`prod`) of each column of M. 
+
+The other `apply` family member that might interest you is `tapply`, which comes from "table apply". We use `tapply` when we have data in separate groups where we want to perform an operation, but separate the results by group. Confused? Here's an example: suppose we have a data frame of patients who are either "Healthy", or "Infected", plus their ages. Something like this:
+
+```{r}
+set.seed(11)
+patients <- data.frame(state = sample(c("Healthy","Infected"),20, replace = TRUE),
+                       age = sample(30:50, 20, replace = TRUE))
+patients
+```
+
+Now let's suppose I want the mean age of each group so that I can compare them. Using `tapply` does this very easily:
+
+```{r}
+tapply(patients$age, patients$state, mean)
+```
+
+Finally, also along the lines of `apply` is the `split` function, which splits a dataset into groups. If you use `split` on your dataset, you can then use other `apply` functions and get `tapply`-like results:
+
+```{r}
+split.patients <- split(patients$age, patients$state)
+lapply(split.patients, mean)
+```
+
+## In-Class Exercises (Part 1)
+
+For the first part of today's exercises, we'll specifically use functions and the `apply` family, though you're welcome to bring in other tools if you would like. 
 
 ## Including Plots
 
