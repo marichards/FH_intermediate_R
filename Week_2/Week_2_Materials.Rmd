@@ -245,10 +245,10 @@ gsub("(good|best)","very \\1",my.strings)
 
 # Specify the type of cheese and chocolate that I like
 my.string <- "My favorite foods are cheese crackers and chocolate cake; some people don't like cheese and chocolate"
-gsub("(cheese)(.)(chocolate)","cheddar \\1\\2dark \\3",my.string)
+gsub("(cheese)(.+)(chocolate)","cheddar \\1\\2dark \\3",my.string)
 ```
 
-That should do for an overview; let's get to an exercise
+There's a lot going on in this last example; see if you can make out all the components! That should do for an overview; let's get to an exercise.
 
 ## In-Class Exercises (Part 2)
 
@@ -258,7 +258,7 @@ KEGG is a common resource used for metabolic studies and as part of its resource
 readLines("../Datasets/keggcompounds.txt", n = 20)
 ```
 
-You can also take a look at the file itself to better understand its formatting. I'll post a solution after class, but I'm looking for a data frame with:
+You can also take a look at the file itself to better understand its formatting. It is located in the class Github Repository under `Datasets`. I'll post a solution after class, but I'm looking for a data frame with:
 
 * Each compound ID
 * Each corresponding name (first entry only)

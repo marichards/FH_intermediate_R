@@ -333,9 +333,9 @@ gsub(&quot;(good|best)&quot;,&quot;very \\1&quot;,my.strings)</code></pre>
 ## [2] &quot;You could say my very best friend is Fred&quot;</code></pre>
 <pre class="r"><code># Specify the type of cheese and chocolate that I like
 my.string &lt;- &quot;My favorite foods are cheese crackers and chocolate cake; some people don't like cheese and chocolate&quot;
-gsub(&quot;(cheese)(.)(chocolate)&quot;,&quot;cheddar \\1\\2dark \\3&quot;,my.string)</code></pre>
-<pre><code>## [1] &quot;My favorite foods are cheese crackers and chocolate cake; some people don't like cheese and chocolate&quot;</code></pre>
-<p>That should do for an overview; let’s get to an exercise</p>
+gsub(&quot;(cheese)(.+)(chocolate)&quot;,&quot;cheddar \\1\\2dark \\3&quot;,my.string)</code></pre>
+<pre><code>## [1] &quot;My favorite foods are cheddar cheese crackers and chocolate cake; some people don't like cheese and dark chocolate&quot;</code></pre>
+<p>There’s a lot going on in this last example; see if you can make out all the components! That should do for an overview; let’s get to an exercise.</p>
 </div>
 </div>
 <div id="in-class-exercises-part-2" class="section level2">
@@ -361,7 +361,7 @@ gsub(&quot;(cheese)(.)(chocolate)&quot;,&quot;cheddar \\1\\2dark \\3&quot;,my.st
 ## [18] &quot;            R00205 R00208 R00213 R00218 R00227 R00243 R00245 R00248 &quot;
 ## [19] &quot;            R00250 R00251 R00254 R00256 R00257 R00264 R00269 R00270 &quot;
 ## [20] &quot;            R00271 R00274 R00276 R00277 R00279 R00280 R00283 R00284 &quot;</code></pre>
-<p>You can also take a look at the file itself to better understand its formatting. I’ll post a solution after class, but I’m looking for a data frame with:</p>
+<p>You can also take a look at the file itself to better understand its formatting. It is located in the class Github Repository under <code>Datasets</code>. I’ll post a solution after class, but I’m looking for a data frame with:</p>
 <ul>
 <li>Each compound ID</li>
 <li>Each corresponding name (first entry only)</li>
