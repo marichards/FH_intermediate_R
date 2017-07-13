@@ -36,3 +36,4 @@ The following space includes resources for each week of the course and will be u
 
 - I've created a very short [slide deck](https://marichards.github.io/FH_intermediate_R/Week_2/Week_2_Slides.html) that focuses on coding approach, specifically by encouraging pseudocoding. 
 - Here are the [Week 2 Materials](https://marichards.github.io/FH_intermediate_R/Week_2/Week_2_Materials.html). These include some additional materials and activities on the `apply` family and regular expressions. The latter were covered only briefly in the DataCamp lessons, and my materials will greatly expand on them
+- Here is a small change. 
