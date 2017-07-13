@@ -71,12 +71,22 @@ lapply(split.patients, mean)
 
 For the first part of today's exercises, we'll specifically use functions and the `apply` family, though you're welcome to bring in other tools if you would like. 
 
-## Including Plots
+1) Load the built-in R data set "airquality" as follows:
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+data(airquality)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+These data measure various things having to do with the air quality in New York. For more information, use the `?` operator:
+
+```{r eval=FALSE}
+?airquality
+```
+
+2) The data include a column called "Month" where each month is encoded as an integer. Using the skills you've learned in Intermediate R, add a new column to the data frame called "Month.Name" that contains the actual name of the month (e.g. 1 becomes January). 
+
+3) Now that you have month names in your data frame, find the mean of the "Ozone" variable for each month. Which month has the highest mean Ozone level? Which is lowest?
+
+## Additional Material: Regular Expressions
+
+
