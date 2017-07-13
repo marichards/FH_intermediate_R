@@ -203,8 +203,170 @@ lapply(split.patients, mean)</code></pre>
 <li><p>Now that you have month names in your data frame, find the mean of the “Ozone” variable for each month. Which month has the highest mean Ozone level? Which is lowest?</p></li>
 </ol>
 </div>
-<div id="additional-material-regular-expressions" class="section level2">
-<h2>Additional Material: Regular Expressions</h2>
+<div id="additional-material-regular-expressions-and-metacharacters" class="section level2">
+<h2>Additional Material: Regular Expressions and Metacharacters</h2>
+<p>I think we could spend this entire course on regular expressions; they’re one of my favorite subjects because I find they come in handy A LOT. It’s a subject that transcends R, so you can apply this portion to other languages as well. Regular expressions are really valuable because they enable you to clean up and work with messy data, extracting what you want and leaving behind what you don’t want.</p>
+<p>I’ll begin with a more in-depth look at useful metacharacters in regular expressions, then I’ll give you an exercise to test out some of those concepts. In case the terminology is confusing, the “metacharacters” in regex refer to symbols that aren’t interpreted literally. For instance, the “.” character isn’t actually interpreted as a dot; rather, in regex it means “any character”. So the following produces a match:</p>
+<pre class="r"><code>my.string &lt;- &quot;Hi there!&quot;
+grepl(&quot;.&quot;,my.string)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Basically, all I did was tell R to look for any character. It’ll even work on a string composed of white spaces:</p>
+<pre class="r"><code>my.string &lt;- &quot;  &quot;
+grepl(&quot;.&quot;,my.string)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Some metacharacters tell R what to look for, others tell R how many times to look for it, others tell R where to look for it, and still others allow you to group or capture expressions. So, using those 4 categories as a guide, here’s some common metacharacters that prove exceedingly useful:</p>
+<div id="character-types" class="section level3">
+<h3>Character types</h3>
+<ul>
+<li><code>.</code> matches anything; it’s more useful than it sounds</li>
+<li><code>\\d</code> matches a digit, so any numeric character</li>
+<li><code>\\s</code> matches a space</li>
+<li><code>\\n</code> matches a new line character</li>
+<li><code>\\w</code> matches a word, so any alphabetical character</li>
+</ul>
+<p>It’s also worth noting that for the <code>\\x</code> notation, a capitalized version of the same letter will match the opposite (i.e. <code>\\X</code> matches anything that isn’t matched by <code>\\x</code>). Here are a couple examples to illustrate:</p>
+<pre class="r"><code>my.string &lt;- &quot;Thishasnospaces&quot;
+grepl(&quot;\\s&quot;,my.string)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>grepl(&quot;\\S&quot;,my.string)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>In the first example, we looked for a space, but found none; in the second example, we looked for anything that isn’t a space and found plenty. This also brings an important concept into the foreground:</p>
+<p><strong>Regular expressions are matching on the WHOLE STRING, not just a part of it</strong></p>
+<p>So in the second example here, I got one <code>TRUE</code> returned for one string. There are actually 15 characters in the string, none of which are spaces, so we match the expression 15 times. But because we only need 1 match, we only get 1 <code>TRUE</code> back. This is illustrated by using <code>grep</code> and returning the matched value(s):</p>
+<pre class="r"><code>grep(&quot;\\S&quot;, my.string, value = TRUE)</code></pre>
+<pre><code>## [1] &quot;Thishasnospaces&quot;</code></pre>
+<p>As you can see, the value we matched is the whole string, not each individual character. R is designed to run the <code>grep</code> type commands on vectors, so it’s really good for finding matches in a lot of strings. If you wanted to do something with the place where you actually match, you’d have to actually use <code>sub</code> or <code>gsub</code>:</p>
+<pre class="r"><code>gsub(&quot;\\S&quot;, &quot;0&quot;,my.string)</code></pre>
+<pre><code>## [1] &quot;000000000000000&quot;</code></pre>
+<p>When we tell R to substitute a <code>0</code> for every match, we see now that every character matched, just as we’d expect.</p>
+</div>
+<div id="character-repeats" class="section level3">
+<h3>Character repeats</h3>
+<p>It’s oftentimes important to specify how many occurences of your pattern (or part of your pattern) you are looking for. Maybe you’re looking for a phone number of 10 digits, or perhaps you have some complicated identifier that has 3 letters followed by 4 digits followed by 3 more letters. In these cases, you can use metacharacters to specify the number of occurences you’re looking for. For each of these, you’ll want to follow your character or expression with one of these symbols; I’ll demonstrate once I’ve defined all of them:</p>
+<ul>
+<li><code>?</code> matches 0 or 1 occurence</li>
+<li><code>+</code> matches 1 or more occurence</li>
+<li><code>*</code> matches 0 or more occurences</li>
+<li><code>{m,n}</code> matches at least m, but not more than n occurences</li>
+<li><code>{m,}</code> matches at least m occurences</li>
+<li><code>{,n}</code> matches no more than n occurences</li>
+<li><code>{m}</code> matches exactly m occurences</li>
+</ul>
+<p>Here’s a few examples to illustrate:</p>
+<pre class="r"><code>my.string1 &lt;- &quot;My phone number is 8675309&quot;
+my.string2 &lt;- &quot;My address is 1274 King St.&quot;
+my.strings &lt;- c(my.string1, my.string2)
+
+# Match only the address using an exact number of digits:
+grepl(&quot;\\d{7}&quot;,my.strings)</code></pre>
+<pre><code>## [1]  TRUE FALSE</code></pre>
+<pre class="r"><code># Match both by looking for 3-8 digits
+grepl(&quot;\\d{3,8}&quot;,my.strings)</code></pre>
+<pre><code>## [1] TRUE TRUE</code></pre>
+<pre class="r"><code># Match only if there's at least 1 number 8
+grepl(&quot;8+&quot;,my.strings)</code></pre>
+<pre><code>## [1]  TRUE FALSE</code></pre>
+<pre class="r"><code># Match if there's 0 or 1 number 8
+grepl(&quot;8?&quot;,my.strings)</code></pre>
+<pre><code>## [1] TRUE TRUE</code></pre>
+</div>
+<div id="character-placement" class="section level3">
+<h3>Character Placement</h3>
+<p>Where your match occurs can be really important; you might be looking for something at only the start of the string, or perhaps just at the end. There are 4 metacharacters that are useful here:</p>
+<ul>
+<li><code>^</code> matches the pattern only at the start of a string</li>
+<li><code>$</code> matches the pattern only at the end of a string</li>
+<li><code>\\b</code> matches the pattern at either end</li>
+<li><code>\\B</code> matches the pattern only if it’s not at an end</li>
+</ul>
+<p>Some examples:</p>
+<pre class="r"><code>my.string1 &lt;- 'Fred is a good friend'
+my.string2 &lt;- 'You could say my best friend is Fred'
+my.strings &lt;- c(my.string1, my.string2)
+
+# Look for Fred only at the start
+grepl(&quot;^Fred&quot;,my.strings)</code></pre>
+<pre><code>## [1]  TRUE FALSE</code></pre>
+<pre class="r"><code># Look for Fred only at the end
+grepl(&quot;Fred$&quot;,my.strings)</code></pre>
+<pre><code>## [1] FALSE  TRUE</code></pre>
+<pre class="r"><code># Look for Fred at either end
+grepl(&quot;\\bFred&quot;,my.strings)</code></pre>
+<pre><code>## [1] TRUE TRUE</code></pre>
+<pre class="r"><code># Look for Fred in the middle only
+grepl(&quot;\\BFred&quot;,my.strings)</code></pre>
+<pre><code>## [1] FALSE FALSE</code></pre>
+</div>
+<div id="grouping-and-capturing-expressions" class="section level3">
+<h3>Grouping and Capturing Expressions</h3>
+<p>There are 2 distinct concepts here that I’ve put together; the first is a case where you’re looking for multiple possibilities at once. There’s a number of metacharacters that help with that:</p>
+<ul>
+<li><code>[something]</code> looks for anything inside the brackets; you can use hyphens here, so <code>[0-9]</code> looks for any digit and is equivalent to <code>\\d</code></li>
+<li><code>[^something]</code> looks for anything that is NOT inside the brackets, so the “^” inside square brackets effectively means “not”</li>
+<li><code>|</code> acts as an “or” to match alternative patterns</li>
+<li><code>&amp;</code> acts as an “and” to match multiple patterns</li>
+</ul>
+<p>And some examples:</p>
+<pre class="r"><code>my.string1 &lt;- 'sandwiches'
+my.string2 &lt;- 'pizza'
+my.strings &lt;- c(my.string1, my.string2)
+
+# Look for the letters &quot;z&quot; and &quot;w&quot;
+grepl(&quot;[zw]&quot;, my.strings)</code></pre>
+<pre><code>## [1] TRUE TRUE</code></pre>
+<pre class="r"><code># Look for anything but letters that appear in &quot;Pizza&quot;
+grepl(&quot;[^piza]&quot;, my.strings)</code></pre>
+<pre><code>## [1]  TRUE FALSE</code></pre>
+<p>The other is useful for capturing expressions, generally for doing specific substitutions or for keeping only a sub-string:</p>
+<ul>
+<li><code>(something)</code> allows you to group patterns to be more specific; it also allows you to capture the matched pattern, which is super useful for changing things with <code>sub</code> or <code>gsub</code></li>
+<li><code>\\X</code> pulls out matches captured by the parentheses, where X is a digit 1 or greater. So \1 returns the first match, \2 returns the second match, etc.</li>
+</ul>
+<p>Here’s 1 example each of using the capturing to do specific substitutions, then to keep only sub-strings:</p>
+<pre class="r"><code>my.string1 &lt;- &quot;Fred is a good friend&quot;
+my.string2 &lt;- &quot;You could say my best friend is Fred&quot;
+my.strings &lt;- c(my.string1, my.string2)
+
+# If you see &quot;good&quot; or &quot;best&quot;, insert &quot;very&quot; in front
+gsub(&quot;(good|best)&quot;,&quot;very \\1&quot;,my.strings)</code></pre>
+<pre><code>## [1] &quot;Fred is a very good friend&quot;               
+## [2] &quot;You could say my very best friend is Fred&quot;</code></pre>
+<pre class="r"><code># Specify the type of cheese and chocolate that I like
+my.string &lt;- &quot;My favorite foods are cheese crackers and chocolate cake; some people don't like cheese and chocolate&quot;
+gsub(&quot;(cheese)(.)(chocolate)&quot;,&quot;cheddar \\1\\2dark \\3&quot;,my.string)</code></pre>
+<pre><code>## [1] &quot;My favorite foods are cheese crackers and chocolate cake; some people don't like cheese and chocolate&quot;</code></pre>
+<p>That should do for an overview; let’s get to an exercise</p>
+</div>
+</div>
+<div id="in-class-exercises-part-2" class="section level2">
+<h2>In-Class Exercises (Part 2)</h2>
+<p>KEGG is a common resource used for metabolic studies and as part of its resources, it contains a list of compounds and their metadata. I am interested in extracting all of the compounds from KEGG and creating a data frame where each compound record has the KEGG compound ID and a human-readable name. Here’s what the top of the KEGG compounds file looks like:</p>
+<pre><code>##  [1] &quot;ENTRY       C00001                      Compound&quot;                    
+##  [2] &quot;NAME        H2O;&quot;                                                    
+##  [3] &quot;            Water&quot;                                                   
+##  [4] &quot;FORMULA     H2O&quot;                                                     
+##  [5] &quot;MASS        18.0106&quot;                                                 
+##  [6] &quot;REMARK      Same as: D00001&quot;                                         
+##  [7] &quot;REACTION    R00001 R00002 R00004 R00005 R00009 R00010 R00011 R00017 &quot;
+##  [8] &quot;            R00022 R00024 R00025 R00026 R00028 R00036 R00041 R00044 &quot;
+##  [9] &quot;            R00045 R00047 R00048 R00052 R00053 R00054 R00055 R00056 &quot;
+## [10] &quot;            R00057 R00058 R00059 R00060 R00061 R00068 R00069 R00070 &quot;
+## [11] &quot;            R00072 R00073 R00074 R00077 R00078 R00080 R00081 R00082 &quot;
+## [12] &quot;            R00083 R00084 R00085 R00086 R00087 R00088 R00090 R00097 &quot;
+## [13] &quot;            R00102 R00103 R00107 R00111 R00113 R00118 R00119 R00122 &quot;
+## [14] &quot;            R00123 R00125 R00128 R00131 R00132 R00135 R00138 R00143 &quot;
+## [15] &quot;            R00145 R00146 R00148 R00149 R00155 R00159 R00160 R00164 &quot;
+## [16] &quot;            R00173 R00175 R00177 R00181 R00182 R00183 R00184 R00187 &quot;
+## [17] &quot;            R00188 R00191 R00192 R00193 R00194 R00195 R00199 R00203 &quot;
+## [18] &quot;            R00205 R00208 R00213 R00218 R00227 R00243 R00245 R00248 &quot;
+## [19] &quot;            R00250 R00251 R00254 R00256 R00257 R00264 R00269 R00270 &quot;
+## [20] &quot;            R00271 R00274 R00276 R00277 R00279 R00280 R00283 R00284 &quot;</code></pre>
+<p>You can also take a look at the file itself to better understand its formatting. I’ll post a solution after class, but I’m looking for a data frame with:</p>
+<ul>
+<li>Each compound ID</li>
+<li>Each corresponding name (first entry only)</li>
+</ul>
+<p>As with last week’s task, you might find yourself having to search around for answers along the way, and I’d highly recommend writing some pseudocode to guide you.</p>
 </div>
 
 
@@ -230,7 +392,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

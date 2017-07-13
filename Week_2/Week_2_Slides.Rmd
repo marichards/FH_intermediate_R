@@ -1,0 +1,48 @@
+---
+title: "Week 2 Slides"
+author: "Matt Richards"
+date: "7/13/2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Week 2 Agenda
+
+* Quick Slide on Coding Approach
+* Brief Git/Github Revisit
+* Questions/Issues with Assigned Material
+* Week 2 Materials: `apply` Functions
+* Week 2 Materials: Regular Expressions
+
+## Scripting Tip: Pseudocode!
+
+My recommended problem-solving approach:
+
+1. Make sure you completely understand what is being asked
+2. Be certain of what your input looks like and what your output should look like
+3. Embrace pseudocoding; write out your steps in plain English before starting to program
+4. Program in small chunks, checking that you have the correct output at each step along the way
+5. Be patient and don't be afraid to ask questions of your instructor or Google. 
+
+## Pseudocoding Example
+
+Downloading and adding a column to the "Breast Cancer" data from Week 1:
+
+```{r echo = TRUE}
+# Download the file from the URL
+
+# Read it into a data frame and change the column names
+
+# Create a new vector for the new column
+
+# Cycle through each entry and:
+
+    # Determine its identity
+
+    # Assign a value to the new column accordingly
+
+# Add the new column to the data frame and return it
+```

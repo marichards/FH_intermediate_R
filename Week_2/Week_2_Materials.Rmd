@@ -87,6 +87,180 @@ These data measure various things having to do with the air quality in New York.
 
 3) Now that you have month names in your data frame, find the mean of the "Ozone" variable for each month. Which month has the highest mean Ozone level? Which is lowest?
 
-## Additional Material: Regular Expressions
+## Additional Material: Regular Expressions and Metacharacters
 
+I think we could spend this entire course on regular expressions; they're one of my favorite subjects because I find they come in handy A LOT. It's a subject that transcends R, so you can apply this portion to other languages as well. Regular expressions are really valuable because they enable you to clean up and work with messy data, extracting what you want and leaving behind what you don't want. 
 
+I'll begin with a more in-depth look at useful metacharacters in regular expressions, then I'll give you an exercise to test out some of those concepts. In case the terminology is confusing, the "metacharacters" in regex refer to symbols that aren't interpreted literally. For instance, the "." character isn't actually interpreted as a dot; rather, in regex it means "any character". So the following produces a match:
+
+```{r}
+my.string <- "Hi there!"
+grepl(".",my.string)
+```
+
+Basically, all I did was tell R to look for any character. It'll even work on a string composed of white spaces:
+
+```{r}
+my.string <- "  "
+grepl(".",my.string)
+```
+
+Some metacharacters tell R what to look for, others tell R how many times to look for it, others tell R where to look for it, and still others allow you to group or capture expressions. So, using those 4 categories as a guide, here's some common metacharacters that prove exceedingly useful:
+
+### Character types
+
+* `.` matches anything; it's more useful than it sounds
+* `\\d` matches a digit, so any numeric character
+* `\\s` matches a space
+* `\\n` matches a new line character
+* `\\w` matches a word, so any alphabetical character
+
+It's also worth noting that for the `\\x` notation, a capitalized version of the same letter will match the opposite (i.e. `\\X` matches anything that isn't matched by `\\x`). Here are a couple examples to illustrate:
+
+```{r}
+my.string <- "Thishasnospaces"
+grepl("\\s",my.string)
+```
+
+```{r}
+grepl("\\S",my.string)
+```
+
+In the first example, we looked for a space, but found none; in the second example, we looked for anything that isn't a space and found plenty. This also brings an important concept into the foreground:
+
+**Regular expressions are matching on the WHOLE STRING, not just a part of it**
+
+So in the second example here, I got one `TRUE` returned for one string. There are actually 15 characters in the string, none of which are spaces, so we match the expression 15 times. But because we only need 1 match, we only get 1 `TRUE` back. This is illustrated by using `grep` and returning the matched value(s):
+
+```{r}
+grep("\\S", my.string, value = TRUE)
+```
+
+As you can see, the value we matched is the whole string, not each individual character. R is designed to run the `grep` type commands on vectors, so it's really good for finding matches in a lot of strings. If you wanted to do something with the place where you actually match, you'd have to actually use `sub` or `gsub`:
+
+```{r}
+gsub("\\S", "0",my.string)
+```
+
+When we tell R to substitute a `0` for every match, we see now that every character matched, just as we'd expect.
+
+### Character repeats
+
+It's oftentimes important to specify how many occurences of your pattern (or part of your pattern) you are looking for. Maybe you're looking for a phone number of 10 digits, or perhaps you have some complicated identifier that has 3 letters followed by 4 digits followed by 3 more letters. In these cases, you can use metacharacters to specify the number of occurences you're looking for. For each of these, you'll want to follow your character or expression with one of these symbols; I'll demonstrate once I've defined all of them:
+
+* `?` matches 0 or 1 occurence
+* `+` matches 1 or more occurence
+* `*` matches 0 or more occurences
+* `{m,n}` matches at least m, but not more than n occurences
+* `{m,}` matches at least m occurences
+* `{,n}` matches no more than n occurences
+* `{m}` matches exactly m occurences
+
+Here's a few examples to illustrate:
+
+```{r}
+my.string1 <- "My phone number is 8675309"
+my.string2 <- "My address is 1274 King St."
+my.strings <- c(my.string1, my.string2)
+
+# Match only the address using an exact number of digits:
+grepl("\\d{7}",my.strings)
+
+# Match both by looking for 3-8 digits
+grepl("\\d{3,8}",my.strings)
+
+# Match only if there's at least 1 number 8
+grepl("8+",my.strings)
+
+# Match if there's 0 or 1 number 8
+grepl("8?",my.strings)
+```
+
+### Character Placement
+
+Where your match occurs can be really important; you might be looking for something at only the start of the string, or perhaps just at the end. There are 4 metacharacters that are useful here:
+
+* `^` matches the pattern only at the start of a string
+* `$` matches the pattern only at the end of a string
+* `\\b` matches the pattern at either end
+* `\\B` matches the pattern only if it's not at an end
+
+Some examples:
+
+```{r}
+my.string1 <- 'Fred is a good friend'
+my.string2 <- 'You could say my best friend is Fred'
+my.strings <- c(my.string1, my.string2)
+
+# Look for Fred only at the start
+grepl("^Fred",my.strings)
+
+# Look for Fred only at the end
+grepl("Fred$",my.strings)
+
+# Look for Fred at either end
+grepl("\\bFred",my.strings)
+
+# Look for Fred in the middle only
+grepl("\\BFred",my.strings)
+```
+
+### Grouping and Capturing Expressions
+
+There are 2 distinct concepts here that I've put together; the first is a case where you're looking for multiple possibilities at once. There's a number of metacharacters that help with that: 
+
+* `[something]` looks for anything inside the brackets; you can use hyphens here, so `[0-9]` looks for any digit and is equivalent to `\\d`
+* `[^something]` looks for anything that is NOT inside the brackets, so the "^" inside square brackets effectively means "not"
+* `|` acts as an "or" to match alternative patterns
+* `&` acts as an "and" to match multiple patterns
+
+And some examples:
+
+```{r}
+my.string1 <- 'sandwiches'
+my.string2 <- 'pizza'
+my.strings <- c(my.string1, my.string2)
+
+# Look for the letters "z" and "w"
+grepl("[zw]", my.strings)
+
+# Look for anything but letters that appear in "Pizza"
+grepl("[^piza]", my.strings)
+```
+
+The other is useful for capturing expressions, generally for doing specific substitutions or for keeping only a sub-string:
+
+* `(something)` allows you to group patterns to be more specific; it also allows you to capture the matched pattern, which is super useful for changing things with `sub` or `gsub`
+* `\\X` pulls out matches captured by the parentheses, where X is a digit 1 or greater. So \\1 returns the first match, \\2 returns the second match, etc. 
+
+Here's 1 example each of using the capturing to do specific substitutions, then to keep only sub-strings:
+
+```{r}
+my.string1 <- "Fred is a good friend"
+my.string2 <- "You could say my best friend is Fred"
+my.strings <- c(my.string1, my.string2)
+
+# If you see "good" or "best", insert "very" in front
+gsub("(good|best)","very \\1",my.strings)
+
+# Specify the type of cheese and chocolate that I like
+my.string <- "My favorite foods are cheese crackers and chocolate cake; some people don't like cheese and chocolate"
+gsub("(cheese)(.)(chocolate)","cheddar \\1\\2dark \\3",my.string)
+```
+
+That should do for an overview; let's get to an exercise
+
+## In-Class Exercises (Part 2)
+
+KEGG is a common resource used for metabolic studies and as part of its resources, it contains a list of compounds and their metadata. I am interested in extracting all of the compounds from KEGG and creating a data frame where each compound record has the KEGG compound ID and a human-readable name. Here's what the top of the KEGG compounds file looks like:
+
+```{r echo = FALSE}
+readLines("../Datasets/keggcompounds.txt", n = 20)
+```
+
+You can also take a look at the file itself to better understand its formatting. I'll post a solution after class, but I'm looking for a data frame with:
+
+* Each compound ID
+* Each corresponding name (first entry only)
+
+As with last week's task, you might find yourself having to search around for answers along the way, and I'd highly recommend writing some pseudocode to guide you. 
