@@ -1,0 +1,117 @@
+---
+title: "Week 3 Materials"
+author: "Matt Richards"
+date: "7/20/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Week Overview
+
+This week was your introduction to `dplyr`, a Hadley Wickham package for manipulating data frames. The whole point of `dplyr` is to make common data frame operations more intuitive and straightforward to implement. The package is organized around a set of verbs and this week, you saw the first 4:
+
+* `select`: used to reduce the number of columns (variables) in the data frame
+* `filter`: used to reduce the number of rows (observations) in the data frame
+* `arrange`: used to change the order of rows (observations) in the data frame
+* `mutate`: used to add new columns (variables) to the data frame
+
+Each of these is pretty easy to understand (though `mutate` can sometimes be a bit tricky) but that's kind of the whole point: working with data frames should be easy. Another tool designed to assist you in working with data is the `tbl_df` data class, which functions like a data frame:
+
+* `tbl_df`: used to turn a data frame into a tbl_df
+
+The `tbl_df` adds some nice features to the data frame when it prints out, showing the data type for each column and cutting off the data displayed such that it doesn't overload your window with rows and rows of stuff
+
+## Additional Materials
+
+1. In case you haven't played with it yet, you might be interested to know that a `tbl_df` has number of classes. For instance, we can start with a data frame and see that it has just 1 class:
+
+```{r message = FALSE}
+library(dplyr)
+df <- data.frame(X = 1:5, Y = letters[1:5])
+class(df)
+```
+
+If we turn it into a `tbl_df`, we'll see that it now has 3 classes:
+
+```{r}
+df <- tbl_df(df)
+class(df)
+```
+
+So when we say a `tbl_df` functions like a data frame, that's mostly because it actually IS a data frame; we've just layered on methods for displaying data. 
+
+2. In the lessons, they tend to talk about 5 main verbs in `dplyr`, but in fact there's more than that. They tend to correspond to the main verbs, but function slightly differently. For instance, the `select` verb lets us take only certain columns; you may not know yet that it can also rename said columns at the same time. For instance:
+
+```{r}
+select(df, New.Name = X)
+```
+
+Of course, that's the exact same verb as before, just used differently; it still grabs only the "X" column. But what if you wanted to just rename the X column without dropping Y? Surprisingly enough, the verb that handles that specific case is called `rename`:
+
+```{r}
+rename(df, New.Name = X)
+```
+We've retained Y and renamed X. So that's useful from time to time. 
+
+3. Similar to the `rename` deviation from `select`, there's a modified version of `mutate` called `transmute` that essentially has the opposite effect. Whereas `rename` preserves the entire data frame that `select` would discard, `transmute` does away with the data frame that `mutate` would preserve. Consider adding the variable Z by pasting X and Y together; here's what happens with `mutate`:
+
+```{r}
+mutate(df, Z = paste0(X,Y))
+```
+
+That's X, Y, and Z all in the same data frame. With `transmute`, we get something different:
+
+```{r}
+transmute(df, Z = paste0(X,Y))
+```
+
+It's just our new variable(s), in this case being just Z. You can imagine this might come in handy if you effectively want to do a `mutate` and a `select` at the same time without writing 2 separate commands.
+
+4. A final note is that `dplyr` is a package actively under development and as such, it's constantly being updated and improved. One of the latest changes I noticed is that you no longer have to refer to columns as variable names; you can also use strings. So this:
+
+```{r}
+select(df,X)
+```
+
+Works the same as this:
+
+```{r}
+select(df,"X")
+```
+
+Why is this important? You can imagine that if you're writing a function, you might want to iteratively select different columns without necessarily knowing their names. This change lets you do that, something like this:
+
+```{r}
+for(i in names(df)){
+  print(select(df, i))
+}
+```
+
+## In-Class Exercises
+
+I love teaching `dplyr` because the more I learn about it, the more I use it in my actual day-to-day work. I'm constantly manipulating data frames and `dplyr` allows me to do it pretty seamlessly. Most of the tools I create include at least some `dplyr`, so today you'll be working with some actual data that I've created in the course of my research.
+
+1. Obtain the 2 text files for this analysis from the `Datasets` folder; they're called `tomtom_human.txt` and `tomtom_mouse.txt`. You should be able to read these into data frames without much trouble. 
+
+2. Combine your data into one data frame and label the columns accordingly; you should be able to get the proper labels from the files themselves. 
+
+Some quick background on what you're using: I am doing a lot of work with transcription factor motifs. There are a lot of motif collections out there; 2 of note are Jaspar and HOCOMOCO and that's what we're concerned with in this activity. Each database contains around 1200 motifs, with Jaspar covering a range of species and HOCOMOCO covering just human and mouse. For the purposes of this study, we're only concerned with human and mouse motifs. 
+
+One problem I've run into is that for my needs downstream, using ALL of the motifs from both databases is overkill. It's likely that there's a fair amount of overlap between databases and I want to eliminate a bunch of that redundancy. To that end, I've run a tool called TOMTOM on the motifs to determine redundancy. What TOMTOM does is to take each "Query" motif (HOCOMOCO here) and find the "Target" motifs (Jaspar here) with which it matches. By doing so, we can find motifs that are redundant and eliminate them from our full set. That's what you'll be doing in this activity. To that end, you'll create 2 resources:
+
+* A data frame containing only "redundant" motifs from HOCOMOCO and the Jaspar target motifs they map to, plus their P-values and $-log_{10}$ P-values. You'll need a cutoff for this; we determined that using a cutoff of $-log_{10}(p) \geq 7.3$ was a good one. 
+
+* A character vector containing all the final, "non-redundant" motifs; that is, the "redundant" ones should be removed. This will require a full set of motif names, which I have prepared for you in the `Datasets/all_motifs.RDS` file. Be careful to make sure the motif names are in the correct format and fix them if need be. 
+
+Using your 2 resources, report back on how many motifs are in the final "non-redundant" set and how many we've eliminated.
+
+## Bonus Content
+
+Not only is the syntax for `dplyr` easier to understand and use, but the code running under the hood is quite fast too. If you have time/interest, try doing the following:
+
+* Re-do the In-Class exercises, but this time use base R functions instead of `dplyr`. I assure you that you can definitely accomplish the same tasks, it just will probably be less intuitive.
+
+* Wrap both of your methods in functions, then time them to see the comparison in performance. What are your takeaways?
