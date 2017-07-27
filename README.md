@@ -39,3 +39,6 @@ The following space includes resources for each week of the course and will be u
 
 ### Week 3
 - Here are the [Week 3 Materials](https://marichards.github.io/FH_intermediate_R/Week_3/Week_3_Materials.html), which include some additional functions in `dplyr` and some extra exercises to work on during class. 
+
+### Week 4
+- Here are the [Week 4 Materials](https://marichards.github.io/FH_intermediate_R/Week_4/Week_4_Materials.html). This is the 2nd lesson on `dplyr`, which finishes the introduction to the main "verbs" in `dplyr` and also covers pipes (`%>%`).
