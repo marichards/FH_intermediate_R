@@ -1,0 +1,51 @@
+---
+title: "Week 3 Solution"
+author: "Matt Richards"
+date: "7/26/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I'm going to define my solution in a function that I can call:
+
+```{r message=FALSE}
+library(dplyr); library(data.table)
+
+matt_fxn <- function(my.data){
+# Function for pulling out genes + rank
+pullGeneAndRank <- function(my.gene,df){
+
+    df %>% filter(target.gene == my.gene) %>%
+    mutate(rank = rank(-pcaMax)) %>%
+    select(gene, rank)
+}
+
+# Apply it to a piece of my gene list using lapply
+gene.list <- unique(my.data$target.gene)
+gene.list <- gene.list[1:100]
+
+df.list <- lapply(gene.list, pullGeneAndRank, my.data)
+
+all.df <- rbindlist(df.list)
+
+# Create summary statistics
+final.df <- all.df %>% group_by(gene) %>%
+summarise(frequency = n(), avg.rank = mean(rank), sd.rank = sd(rank),
+top.rank = min(rank), bot.rank = max(rank)) %>%
+arrange(desc(frequency),avg.rank)
+final.df <- as.data.frame(final.df)
+}
+```
+
+You'll notice I used the `data.table` package; this is purely out of convenience and you could do it other ways if you wanted to. Here's the output:
+
+```{r}
+my.data <- readRDS("../Datasets/mayo.tcx.rds")
+my.solution <- matt_fxn(my.data)
+saveRDS(my.solution, "./my.solution.RDS")
+head(my.solution, 30)
+```
+

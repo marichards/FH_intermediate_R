@@ -1,0 +1,92 @@
+---
+title: "Week 4 Materials"
+author: "Matt Richards"
+date: "7/26/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Week Overview
+
+There are a few basic concepts that were introduced in this week of `dplyr`:
+
+* `summarise/summarize`: a super-useful function for creating summary statistics of your data. They also introduced some helper functions here; I find that the `n()` helper function is particularly useful when I want to know how many observations I have.
+* `group_by`: another really useful function for grouping observations together. This looks a lot like `tapply` if you squint hard enough and I find I use it all the time to group my data
+* `%>%`: the pipe operator, which lets you write your code in a more streamlined (and arguably, more intuitive) way. The pipes let you use successive commands without having to specify your data frame each time. It's sort of like nesting commands, but much cleaner looking. You can use it with all of your `dplyr` commands to save you time and energy. 
+
+That's really all the new stuff, the most difficult part comes when you try to combine commands to do really interesting stuff. But more on that later. 
+
+## Additional Material
+
+Something I love about pipes is that they transcend `dplyr` and can also be applied to some other packages. One particularly useful package you can use them with is `ggplot2`, which is happy to take a piped data frame and do something with it. For instance:
+
+```{r message = FALSE, warning=FALSE}
+library(ggplot2); library(dplyr)
+fake.data <- data.frame(x = rnorm(1000), y = rnorm(1000))
+fake.data %>% mutate(my.color = ifelse(x > 0, TRUE, FALSE)) %>%
+ggplot(aes(x = x, y = y)) + geom_point(aes(col = my.color))
+```
+
+This comes in really handy when you're doing something to your dataset and you want to get a quick graphical look at it. Just pipe it right into `ggplot2` and you can make a plot in the same set of pipes. Keep in mind of course that once you add a plotting statement, you've now got a plot object, not a data frame. So you can't do something like this; we'd get an error:
+
+```{r eval=FALSE}
+fake.data <- data.frame(x = rnorm(1000), y = rnorm(1000))
+fake.data %>% mutate(color = ifelse(x > 0, TRUE, FALSE)) %>%
+  ggplot(aes(x = x, y = y)) + geom_point(aes(col = color)) %>%
+  mutate(z = abs(x+y))
+```
+
+The pipes are not actually native to `dplyr`, they're from a package called `magrittr`, which has a vignette you can check out [here](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html). If you so choose you can use them in base R applications as well:
+
+```{r}
+fake.data %>% subset(x > 1.5 & y > 1)
+
+```
+
+You could even, say, make a linear model using a pipe; because why not? 
+
+```{r}
+fit <- fake.data %>% lm(formula = y~x)
+summary(fit)
+```
+The pipes are kind of their own thing and I haven't explored them much outside of `dplyr` and `ggplot2`, but I'd encourage you to do so. 
+
+## In-Class Exercise
+
+This week, we'll do an activity that requires you to use multiple concepts you've learned up to this point. Rather than specifically naming the concepts, I'm going to lay out the problem and some important details, then let you devise a working solution
+
+For this activity, we'll be using a data set from my own research. It's included in the github repository under "Datasets" as `mayo.tcx.rds` [here](https://github.com/marichards/FH_intermediate_R/Datasets). 
+
+The data are in an .RDS file, which is basically a compressed R data file. It can be directly loaded into R as follows:
+
+```{r}
+my.data <- readRDS("../Datasets/mayo.tcx.rds")
+head(my.data,30); str(my.data)
+```
+
+As you can see, this is a data frame containing 11 columns. What we're actually dealing with is data from a package I created on called `trena`. In each row, there is a transcription factor (`gene`) and a target gene it relates to (`target.gene`), plus a bunch of coefficients that describe the relationship between the two. You don't have to understand ANY of these coefficients; rather, we will only pay attention to the `gene`, `target.gene`, and `pcaMax` columns.
+
+The "pcaMax" column is a combined score that captures which genes have the strongest relationship with their respective target genes. You may have noticed that the data are largely sorted by these pcaMax scores. It's important to note that only the top predicted transcription factor genes appear for each target gene; that is, if target gene "NOC2L" has 40 genes that relate to it, they are not necessarily the same as the 40 genes that appear for the target gene "KLHL17".
+
+### The Challenge
+
+For the purposes of research, we're interested in which transcription factor genes rank mostly highly by pcaMax score most often. So if we're dealing with gene "THAP10", it has a rank of 1 for the target gene "NOC2L", but doesn't even seem to appear as a predictor for target gene "KLHL17". We'd like to get a read on how often and how strongly each transcription factor gene is predicted to influence target genes across a given set of target genes. Ultimately, what we want is a list of transcription factor genes where for each one, we have:
+
+* How many times it appears in the dataset
+* Its average rank in its appearances
+* Its standard deviation of rank in its appearances
+* Its top rank
+* Its bottom rank
+
+Furthermore genes should be sorted, first in order of highest to lowest frequency, then in order of lowest to highest average rank.
+We'll do this over the first 100 unique target genes in the dataset. When you're finished, the output should look like this:
+
+```{r}
+my.solution <- readRDS("./my.solution.RDS")
+head(my.solution, 30)
+```
+
+I'm certain to have left out some bits of explanation, so feel free to ask clarifying questions to make sure you know what I'm asking for. 

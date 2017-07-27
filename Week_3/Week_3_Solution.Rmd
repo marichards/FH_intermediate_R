@@ -1,0 +1,42 @@
+---
+title: "Week 3 Solution"
+author: "Matt Richards"
+date: "7/24/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Part 1: Using `dplyr`
+
+Here's one possible solution to the in-class exercises:
+
+We'll start by reading in our files:
+
+```{r}
+human.hoco <- read.table(file = "../Datasets/tomtom_human.txt")
+mouse.hoco <- read.table(file = "../Datasets/tomtom_mouse.txt")
+all.hoco <- rbind(human.hoco,mouse.hoco)
+names(all.hoco) <- c("Query.ID", "Target.ID", "Optimal.offset", "Pvalue","Evalue","Qvalue","Overlap","Query.consensus","Target.consensus","Orientation")
+dim(all.hoco)
+```
+
+As we can see, there's about 30,000 records here. I'm now going to run through a series of commands that:
+
+* Grab just the relevant columns
+* Add a logP value
+* Filter out only the logP values above my threshold of 7.3
+
+I'm going to do this using pipes (`%>%`) which are introduced later in the `dplyr` lessons. If this is confusing now, I recommend reading ahead in DataCamp.
+
+```{r}
+above.p <- all.hoco %>% 
+  select(Query.ID, Target.ID, Pvalue) %>%
+  mutate(logP = -1*log10(Pvalue)) %>%
+filter(logP >= 7.3)
+head(above.p)
+```
+
+As we can see, I now have a mapping of queries from HOCOMOCO to targets from Jaspar. I 
