@@ -94,9 +94,9 @@ Basically, Motif B is redundant and we want to eliminate it, but we don't want t
 
 That's our basic goal in this exercise. Here's what we currently have:
 
-1. The mapped "redundant" motifs are supplied in Datasets under [motif_matches.RDS]()
-2. The list of "non-redundant" motifs are supplied in Datasets under [nonredundant_motifs.RDS]()
-3. The mapping of all motifs to their TFs is supplied in Datasets under [all_tf_mappings.RDS]()
+1. The mapped "redundant" motifs are supplied in Datasets under [motif_matches.RDS](https://github.com/marichards/FH_intermediate_R/Datasets/motif_matches.RDS)
+2. The list of "non-redundant" motifs are supplied in Datasets under [nonredundant_motifs.RDS](https://github.com/marichards/FH_intermediate_R/Datasets/nonredundant_motifs.RDS)
+3. The mapping of all motifs to their TFs is supplied in Datasets under [all_tf_mappings.RDS](https://github.com/marichards/FH_intermediate_R/Datasets/all_tf_mappings.RDS)
 
 What we want is one thing:
 
