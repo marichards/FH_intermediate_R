@@ -1,0 +1,111 @@
+---
+title: "Week 5 Materials"
+author: "Matt Richards"
+date: "8/2/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Week Overview
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+library(dplyr); library(ggplot2)
+```
+
+This week introduced a lot of new concepts in `dplyr`; it's probably best to break these into categories:
+
+### Joining
+
+The term "join" originates from database languages, so if you're familiar with SQL this will be pretty straightforward. In fact, if you're a database whiz then the commands in dplyr probably make a fair amount of sense; `select` and `group_by` are also directly out of SQL. Anyway, joins in SQL allow you to bring together data from 2 different tables. Joins in `dplyr` do the same thing and follow the same naming convention:
+
+`left_join()`: add data from a second data frame to a first data frame, keeping all entries from the first data frame and augmenting them with columns from the second data frame. By "add", we mean that we match entries on a supplied column or columns, then add new data columns that match up by the supplied column(s). 
+`right_join()`: same as `left_join()` except the second data frame is kept entirely while the first one is used to augment it
+`full_join()`: add two data frames together, but keep all the data from both data frames
+`inner_join()`: add two data frames together, but only keep entries that appear in both data frames
+
+Those are the 4 conventional joins and they match up with information on [Wikipedia](https://en.wikipedia.org/wiki/Join_(SQL)) as well; I highly recommend that as a secondary resource if you want to know more. The `dplyr` package also has some "filtering joins", which aren't really joins in the conventional sense:
+
+`semi_join()`: filter the entries in a data frame by keeping only the entries that appear in a second data frame
+`anti_join()`: filter the entries in a data frame by keeping only the entries that DO NOT appear in a second data frame
+
+These 2 are much more like set operations, which also appear in the package.
+
+### Set Operations
+
+I mentioned this previously in the class, but there's a group of "set operations" in R that allow you to compare vectors to one another. 
+
+
+### Data Assembly
+
+The `dplyr` package contains a family of functions that mirror those in base R and are designed for building data frames. Most basically, you can directly create data frames:
+
+`data_frame()`: makes a data frame, much like `data.frame()`, but adds some useful options
+`as_data_frame()`: converts an object into a data frame, much like `as.data.frame()`
+
+I've never personally used these, but they offer some advantages that are covered in the videos for class. Perhaps most notably, you can do something like this:
+
+```{r}
+data_frame(x = 1:5, y = x+5)
+```
+
+Basically, you can specify variables that depend on each other, as long as you do it in order. It's a fun little functionality that you don't get with the conventional method:
+
+```{r eval = FALSE}
+data.frame(x = 1:5, y = x+5)
+```
+R will throw an error if you try this and tell you it can't find `x`. 
+
+The other little things they added were alternatives to `rbind()` and `cbind()`:
+
+`bind_rows()`: stack 2 data frames on top of each other
+`bind_cols()`: stack 2 data frames next to each other
+
+As they said, you should be very careful when using these options as you can easily ruin your data frame. If you're able to use joins, they're actually much more specific. It's similar to the difference between a hash table and a regular list (or dictionary and list if you're a Python person). That said, the extra functionality of being able to add the `.id` option is really handy if you have a list of named data frames you want to collapse into one data frame. And they're fast!
+
+
+## In-class Exercises
+
+There's so much material we covered this week that I haven't added anything additional. Plus, I think the material was pretty comprehensive on its own. So I'd like to take you back to 2 weeks ago, when I introduced you to motifs. The problem went something like this:
+
+* I have a set of motifs; these are essentially the observed binding sites for transcription factors (TFs).
+* Motifs come from different places, but they aren't all independent; in fact, some of them are definitely redundant across databases
+* Using 1 database (Jaspar) as the starting set of motifs, I want to add all NEW (non-redundant) motifs from another database (HOCOMOCO)
+* As an end goal, you produced 2 things:
+
+    * A data frame with only the "redundant" HOCOMOCO motifs, mapped to the Jaspar motifs they matched
+    * A list of "non-redundant" Jaspar and HOCOMOCO motifs
+    
+That was Week 3; if you haven't yet run through that exercise, I encourage you to take the time to go back and make your way through it. It's an excellent use case of `dplyr` together with regular expressions. 
+
+For this week, we're going to take it a step or two further. Each motif is mapped to at least one TF in a separate list. As you can imagine, some motifs that are considered "redundant" might map to new TFs. For example, we could have the case where:
+
+* Motif A is mapped to TF1
+* Motif B is mapped to TF2
+* Motif A matches Motif B
+
+Basically, Motif B is redundant and we want to eliminate it, but we don't want to lose TF2. So our solution is to map both TFs to Motif A, so we have a table where:
+
+* Motif A is mapped to TF1
+* Motif A is mapped to TF2
+* Motif B is not in the table
+
+That's our basic goal in this exercise. Here's what we currently have:
+
+1. The mapped "redundant" motifs are supplied in Datasets under [motif_matches.RDS]()
+2. The list of "non-redundant" motifs are supplied in Datasets under [nonredundant_motifs.RDS]()
+3. The mapping of all motifs to their TFs is supplied in Datasets under [all_tf_mappings.RDS]()
+
+What we want is one thing:
+
+* A data frame that maps all relationships between non-redundant motifs and their TFs
+
+## Bonus exercises
+
+If you're able to finish the first part of this exercise, try these 2 follow-up exercises that will combine `dplyr` and `ggplot2`:
+
+1. Using your final mapping, create a histogram that shows how many motifs are mapped to each transcription factor. What's the greatest number of motifs mapped to a single TF? Which TF is it?
+
+2. Do the same as 1, except now make a histogram that shows how many TFs are mapped to each motif. What's the greatest number of TFs mapped to a single motif? Which motif is it? 
