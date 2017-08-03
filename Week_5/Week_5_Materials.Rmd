@@ -102,6 +102,36 @@ Basically, Motif B is redundant and we want to eliminate it, but we don't want t
 * Motif A is mapped to TF2
 * Motif B is not in the table
 
+To be more clear, here's an example:
+
+* Suppose we have the following mapping of motifs:
+
+```{r echo = FALSE}
+data.frame(Query = c("B","D","D"), Target = c("A","C","E"))
+```
+
+Here, the "Query" column denotes redundant motifs that I don't want in my final dataset. They have information that overlaps with the "Target" set of motifs, which are a subset of my non-redundant set. The "Target" column doesn't contain all non-redundant motifs, so I have a full set of my non-redundant ones:
+
+```{r echo = FALSE}
+
+data.frame(Motif = c("A","C","E","F"))
+```
+
+As you can see, there's an extra motif here that wasn't in the "Target" column of the first data set. 
+
+* I also know that motifs map to TFs, so I have a mapping of EVERY motif (including redundant ones) to their TF:
+
+```{r echo = FALSE}
+data.frame(Motif = LETTERS[1:6], TFs = 1:6)
+```
+
+Now I want to retain this TF information, but I don't want the redundant motifs there anymore. So what I want as a final product is this:
+
+```{r echo = FALSE}
+blah = data.frame(Motif = c("A","A","C","C","E","E","F"), TFs = c(1, 2, 3, 4, 5, 4, 6))
+blah
+```
+
 That's our basic goal in this exercise. Here's what we currently have:
 
 1. The mapped "redundant" motifs are supplied in Datasets under [motif_matches.RDS](https://github.com/marichards/FH_intermediate_R/Datasets)
@@ -118,4 +148,24 @@ If you're able to finish the first part of this exercise, try these 2 follow-up 
 
 1. Using your final mapping, create a histogram that shows how many motifs are mapped to each transcription factor. What's the greatest number of motifs mapped to a single TF? Which TF is it?
 
+FYI, the example I was using earlier would look something like this:
+
+```{r echo = FALSE}
+blah %>% 
+  group_by(Motif) %>% 
+  summarize(TFs = n()) %>% 
+  arrange(desc(TFs)) %>% 
+  ggplot(aes(x=TFs)) + geom_histogram(bins = 2)
+```
+
 2. Do the same as 1, except now make a histogram that shows how many TFs are mapped to each motif. What's the greatest number of TFs mapped to a single motif? Which motif is it? 
+
+Again, the example I did would look like this:
+
+```{r echo = FALSE}
+blah %>% 
+  group_by(TFs) %>% 
+  summarize(motifs = n()) %>% 
+  arrange(desc(motifs)) %>% 
+  ggplot(aes(x=motifs)) + geom_histogram(bins = 2)
+```
