@@ -129,19 +129,42 @@ $(document).ready(function () {
 <div id="joining" class="section level3">
 <h3>Joining</h3>
 <p>The term “join” originates from database languages, so if you’re familiar with SQL this will be pretty straightforward. In fact, if you’re a database whiz then the commands in dplyr probably make a fair amount of sense; <code>select</code> and <code>group_by</code> are also directly out of SQL. Anyway, joins in SQL allow you to bring together data from 2 different tables. Joins in <code>dplyr</code> do the same thing and follow the same naming convention:</p>
-<p><code>left_join()</code>: add data from a second data frame to a first data frame, keeping all entries from the first data frame and augmenting them with columns from the second data frame. By “add”, we mean that we match entries on a supplied column or columns, then add new data columns that match up by the supplied column(s). <code>right_join()</code>: same as <code>left_join()</code> except the second data frame is kept entirely while the first one is used to augment it <code>full_join()</code>: add two data frames together, but keep all the data from both data frames <code>inner_join()</code>: add two data frames together, but only keep entries that appear in both data frames</p>
+<ul>
+<li><code>left_join()</code>: add data from a second data frame to a first data frame, keeping all entries from the first data frame and augmenting them with columns from the second data frame. By “add”, we mean that we match entries on a supplied column or columns, then add new data columns that match up by the supplied column(s).</li>
+<li><code>right_join()</code>: same as <code>left_join()</code> except the second data frame is kept entirely while the first one is used to augment it</li>
+<li><code>full_join()</code>: add two data frames together, but keep all the data from both data frames</li>
+<li><code>inner_join()</code>: add two data frames together, but only keep entries that appear in both data frames</li>
+</ul>
 <p>Those are the 4 conventional joins and they match up with information on <a href="https://en.wikipedia.org/wiki/Join_(SQL)">Wikipedia</a> as well; I highly recommend that as a secondary resource if you want to know more. The <code>dplyr</code> package also has some “filtering joins”, which aren’t really joins in the conventional sense:</p>
-<p><code>semi_join()</code>: filter the entries in a data frame by keeping only the entries that appear in a second data frame <code>anti_join()</code>: filter the entries in a data frame by keeping only the entries that DO NOT appear in a second data frame</p>
+<ul>
+<li><code>semi_join()</code>: filter the entries in a data frame by keeping only the entries that appear in a second data frame</li>
+<li><code>anti_join()</code>: filter the entries in a data frame by keeping only the entries that DO NOT appear in a second data frame</li>
+</ul>
 <p>These 2 are much more like set operations, which also appear in the package.</p>
 </div>
 <div id="set-operations" class="section level3">
 <h3>Set Operations</h3>
-<p>I mentioned this previously in the class, but there’s a group of “set operations” in R that allow you to compare vectors to one another.</p>
+<p>I mentioned this previously in the class, but there’s a group of “set operations” in R that allow you to compare vectors to one another. The <code>dplyr</code> package adds the ability to do this over entire data frames:</p>
+<ul>
+<li><code>union()</code>: returns all values that appear in either data frame</li>
+<li><code>intersect()</code>: returns only values that appear in both data frames</li>
+<li><code>setdiff(x,y)</code>: returns only values that appear in x and NOT in y</li>
+<li><code>setequal()</code>: determines whether or not 2 data frames have the exact same information</li>
+<li><code>identical()</code>: determines whether or not 2 data frames have the exame same information in the exact same order</li>
+</ul>
+<p>A couple things to remember about these commands:</p>
+<ol style="list-style-type: decimal">
+<li>The first 3 all have corresponding <code>join</code> commands that you can use instead if you’d like</li>
+<li>These return only unique values; so if you don’t want to lose duplicates, then use joins instead</li>
+</ol>
 </div>
 <div id="data-assembly" class="section level3">
 <h3>Data Assembly</h3>
 <p>The <code>dplyr</code> package contains a family of functions that mirror those in base R and are designed for building data frames. Most basically, you can directly create data frames:</p>
-<p><code>data_frame()</code>: makes a data frame, much like <code>data.frame()</code>, but adds some useful options <code>as_data_frame()</code>: converts an object into a data frame, much like <code>as.data.frame()</code></p>
+<ul>
+<li><code>data_frame()</code>: makes a data frame, much like <code>data.frame()</code>, but adds some useful options</li>
+<li><code>as_data_frame()</code>: converts an object into a data frame, much like <code>as.data.frame()</code></li>
+</ul>
 <p>I’ve never personally used these, but they offer some advantages that are covered in the videos for class. Perhaps most notably, you can do something like this:</p>
 <pre class="r"><code>data_frame(x = 1:5, y = x+5)</code></pre>
 <pre><code>## # A tibble: 5 x 2
@@ -188,9 +211,9 @@ $(document).ready(function () {
 </ul>
 <p>That’s our basic goal in this exercise. Here’s what we currently have:</p>
 <ol style="list-style-type: decimal">
-<li>The mapped “redundant” motifs are supplied in Datasets under <a href="https://github.com/marichards/FH_intermediate_R/Datasets/motif_matches.RDS">motif_matches.RDS</a></li>
-<li>The list of “non-redundant” motifs are supplied in Datasets under <a href="https://github.com/marichards/FH_intermediate_R/Datasets/nonredundant_motifs.RDS">nonredundant_motifs.RDS</a></li>
-<li>The mapping of all motifs to their TFs is supplied in Datasets under <a href="https://github.com/marichards/FH_intermediate_R/Datasets/all_tf_mappings.RDS">all_tf_mappings.RDS</a></li>
+<li>The mapped “redundant” motifs are supplied in Datasets under <a href="https://github.com/marichards/FH_intermediate_R/Datasets">motif_matches.RDS</a></li>
+<li>The list of “non-redundant” motifs are supplied in Datasets under <a href="https://github.com/marichards/FH_intermediate_R/Datasets">nonredundant_motifs.RDS</a></li>
+<li>The mapping of all motifs to their TFs is supplied in Datasets under <a href="https://github.com/marichards/FH_intermediate_R/Datasets">all_tf_mappings.RDS</a></li>
 </ol>
 <p>What we want is one thing:</p>
 <ul>
