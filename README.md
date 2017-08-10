@@ -45,3 +45,6 @@ The following space includes resources for each week of the course and will be u
 
 ### Week 5
 - Here are the [Week 5 Materials](https://marichards.github.io/FH_intermediate_R/Week_5/Week_5_Materials.html). This lesson goes into SQL-style joins and other commands to assemble data.
+
+### Week 6
+- Here are the [Week 6 Materials](https://marichards.github.io/FH_intermediate_R/Week_6/Week_6_Materials.html). These materials build out the SQL style of writing queries, a useful skill to couple with your knowledge of `dplyr`. 
