@@ -184,7 +184,7 @@ con2 &lt;- dbConnect(PostgreSQL(),
 <p>I can also do something like this using character strings, but I need to surround them in single quotes:</p>
 <p><code>select * from Batting where playerID == 'addybo01';</code></p>
 <p>Finally, you can also search for substrings using the “like” operator, which also requires use of percentage signs (<code>%</code>) as follows:</p>
-<p><code>select * from Batting where playerID like 'aaron';</code></p>
+<p><code>select * from Batting where playerID like '%aaron%';</code></p>
 <p>That grabs all entries where the playerID contains the substring “aaron”. And that should be all you neeed in terms of queries; we won’t cover joins in SQL because you already know them in <code>dplyr</code>, so stick to that.</p>
 <p>You might have noticed to this point that I haven’t actually been using R; these queries are literally in the SQL language, and to actually use them we need to use the function <code>dbGetQuery()</code> in R. So let’s grab the first 5 rows of the <code>playerID</code> and <code>yearID</code> variables:</p>
 <pre class="r"><code>my.query &lt;- &quot;select playerID, yearID from Batting limit 5;&quot;
@@ -206,6 +206,8 @@ head(hr.50)</code></pre>
 ## 4  ruthba01   1928 54
 ## 5 wilsoha01   1930 56
 ## 6  foxxji01   1932 58</code></pre>
+<p>One more word on this; the first command I showed was able to grab an entire table, but the <code>DBI</code> package actually has a more straightforward way to grab an entire table using <code>dbReadTable()</code>:</p>
+<pre class="r"><code>all.batting &lt;- dbReadTable(con, name = &quot;Batting&quot;)</code></pre>
 <p>You’ll notice here that I now have a data frame that I can now play around with and manipulate in R. This is the goal of the whole operation: grab the data you want and pull it into R so you can find useful stuff with it. At this point, it’s up to you what you want to do with the data.</p>
 </div>
 <div id="writing-to-a-database" class="section level3">

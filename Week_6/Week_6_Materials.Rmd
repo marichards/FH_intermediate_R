@@ -102,7 +102,7 @@ I can also do something like this using character strings, but I need to surroun
 
 Finally, you can also search for substrings using the "like" operator, which also requires use of percentage signs (`%`) as follows:
 
-```select * from Batting where playerID like 'aaron';```
+```select * from Batting where playerID like '%aaron%';```
 
 That grabs all entries where the playerID contains the substring "aaron". And that should be all you neeed in terms of queries; we won't cover joins in SQL because you already know them in `dplyr`, so stick to that. 
 
@@ -119,6 +119,12 @@ As you can see, this returns a data frame to me with the data I wanted. Let's go
 my.query <- "select playerID, yearID, HR from Batting where HR >= 50"
 hr.50 <- dbGetQuery(con, my.query)
 head(hr.50)
+```
+
+One more word on this; the first command I showed was able to grab an entire table, but the `DBI` package actually has a more straightforward way to grab an entire table using `dbReadTable()`:
+
+```{r}
+all.batting <- dbReadTable(con, name = "Batting")
 ```
 
 You'll notice here that I now have a data frame that I can now play around with and manipulate in R. This is the goal of the whole operation: grab the data you want and pull it into R so you can find useful stuff with it. At this point, it's up to you what you want to do with the data.
