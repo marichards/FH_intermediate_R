@@ -200,13 +200,13 @@ I have effectively taken small snapshots of some databases I created for the "bo
 6. Let's narrow it down even further; how many hits are found between the 25,000,000 and 30,000,000 positions? That is, the region needs to start AFTER 25 million bp and end BEFORE 30,000 positions (this is NOT quite the same as the `fp_start` and `fp_end` columns). How many hits do you find for each method? 
 
 7. Using our 2 new data sets from step 6, put the 2 together into one data frame. Then, use your `dplyr` skills to pull out these statistics for each method:
-    * Mean, median, and maximum absolute value of the "score1" column
+    * Mean, median, min, and max of the "score1" column
     * Mean, median, min, and max of the "length" column
     * Number of unique motifs for each method
     
 What can you say about how the methods compare? Anything interesting?
 
-8. Using the data from 7, make a plot that illustrates a compelling comparison between the methods. It's open-ended!
+8. Using the data from 7 to guide your intution about what's interesting, make a plot that illustrates a compelling comparison between the methods. It's open-ended!
 
 ### BONUS EXERCISE
 
@@ -250,7 +250,24 @@ spec.well <- well.hits %>% left_join(well.regions, by = "loc") %>% filter(start 
 spec.hint <- hint.hits %>% left_join(hint.regions, by = "loc") %>% filter(start > 25000000, endpos < 30000000) # 2345
 
 # Here's how to put together the datasets and pull out grouped summary statistics:
+my.stats <- bind_rows(spec.well, spec.hint) %>% 
+  select(name, length, method, score1) %>%
+  group_by(method) %>%
+  summarise(Unique.motifs = n_distinct(name),
+            Mean.score = mean(score1),
+            Med.score = median(score1),
+            Max.score = max(score1),
+            Min.score = min(score1),
+            Mean.length = mean(length),
+            Med.length = median(length),
+            Max.length = max(length),
+            Min.length = min(length)
+            )
 
+# Here's an example plot looking at the distribution of scores v. length
+bind_rows(spec.well, spec.hint) %>%
+  ggplot(aes(x = length, y = score1)) + geom_point(aes(col = method))
+  
 ```
 
 
