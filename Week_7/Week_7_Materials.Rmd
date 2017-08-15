@@ -1,0 +1,23 @@
+---
+title: "Week 7 Materials"
+author: "Matt Richards"
+date: "8/15/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Week 7 Overview
+
+This week was quite different from the previous ones; instead of new data manipulation techniques, the material consisted of 
+
+## Additional Materials
+
+- The `cache` option
+
+- The emoticon package
+
+This one is just for fun: [here](https://github.com/hadley/emo)
+
