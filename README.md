@@ -48,3 +48,6 @@ The following space includes resources for each week of the course and will be u
 
 ### Week 6
 - Here are the [Week 6 Materials](https://marichards.github.io/FH_intermediate_R/Week_6/Week_6_Materials.html). These materials build out the SQL style of writing queries, a useful skill to couple with your knowledge of `dplyr`. 
+
+### Week 6
+- Here are the [Week 7 Materials](https://marichards.github.io/FH_intermediate_R/Week_7/Week_7_Materials.html). These materials review the RMarkdown concepts introduced by DataCamp and add a few other useful bits of infromation. The associated activity is creating your own reproducible report, complete with embedded R code and at least 1 plot.  
