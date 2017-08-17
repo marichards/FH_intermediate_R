@@ -11,13 +11,118 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Week 7 Overview
 
-This week was quite different from the previous ones; instead of new data manipulation techniques, the material consisted of 
+This week was quite different from the previous ones; instead of new data manipulation techniques, the material outlined how to created reproducible documents with code embedded and covered a number of different options. Here's some of the main points (there's a bunch of smaller ones):
 
-## Additional Materials
+* You can create RMarkdown documents in RStudio under `File -> New File -> RMarkdown`
+* RMarkdown is similar to regular markdown in that you can do HTML-style markup with some easy tags:
+    * Different sections are marked using the "#" symbol for headers
+    * Unordered lists can be made using various bullets (e.g. `*`, `-`)
+    * Ordered lists can be made using numbers or letters
+    * Make hyperlinks using the "[]()" notation
+    * Make **bold** and *italics* using the `*` symbol around your text
+    * Embed LaTeX using double `$` signs around your text
+* Include and evaluate R code both inline or in chunks
+* Chunks have lots of options you can alter, including:
+    * `warning/error/message`: alter whether or not your code produces different types of messages
+    * `echo/eval/results`: alter whether or not code is printed and whether it actually prints results
+    * Labels, which let you decide when/where to evaluate a chunk and reuse chunks later in the document
+    
+I think that about sums it up, at least as far as the DataCamp materials are concerned. 
 
-- The `cache` option
+## Some Extra Markdown Pointers
 
-- The emoticon package
+Here's a handful of things I didn't see in the lecture notes that might come in handy:
 
-This one is just for fun: [here](https://github.com/hadley/emo)
+* Whitespace matters; I generally err on the side of putting a blank line in between all markdown elements, lest they run together and ruin each other. For instance, if I forget the blank line before a header, it doesn't come out as I expected:
+
+Some paragraph
+### This section header is ruined 
+
+* The previous bullet point also applies to things like lists; leave spaces in between your in-line markdown and the surrounding text, or else you might end up making a failed attempt at a list:
+
+1.This
+2.Is
+3.Wrong
+
+* On the flip side, spacing matters in the opposite matter for hyperlinks, a mistake I seem to make a lot. A hyperlink must have square brackets around the text followed immediately by the URL in regular parentheses. So this doesn't work; the link is still clickable, but the text I wanted isn't part of the link:
+
+[Failed Hyperlink] (https://fail.com)
+
+* One last thing: of the options they showed for the code chunks, the important one I think they skipped over is the `cache` option. If you specify it as `TRUE`, your code output for that chunk is saved, which is really useful if it's a long bit of output. For instance, if you take a look at my [Intro_to_Parallel](https://raw.githubusercontent.com/marichards/FH_intermediate_R/master/User_Guides/Into_to_Parallel.Rmd) document on Github, you'll notice that I carry out some calculations that take 50 seconds or so. I didn't really want to wait around for R to re-do those calculations each time I re-knit the document, so I set `cache = TRUE` in those chunks. Depending on your code chunks, you may find this very useful from time to time. 
+
+## A Couple More Things
+
+I wanted to introduce 2 more things; one is really useful, the other one is dumb and silly. You have been forewarned; feel free to skip the dumb one, it'll be pretty obvious which one it is
+
+### The useful one
+
+You've probably all seen `ggplot2` in action and likely used it by this point. Another package you probably haven't seen is `ggpubr`. It's essentially a wrapper for `ggplot2` and a couple other packages, and it makes it really easy to produce publication-quality graphics with multiple figures. There's an excellent overview/tutorial [here](http://www.sthda.com/english/wiki/ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page) that I stumbled upon a few weeks ago, and I'd highly recommend checking it out if you're interested in the package. As a pitch for why you should check it out, here's something you can do easily with it:
+
+```{r message = FALSE, fig.height=10}
+library(ggpubr)
+data(mtcars)
+mtcars$cyl <- as.factor(mtcars$cyl)
+mtcars$make <- rownames(mtcars)
+
+# Make a scatterplot
+sp <- ggscatter(mtcars, x = "wt", y = "mpg", 
+                color = "cyl", palette = "Dark2")
+
+# Make a barplot
+bp <- ggbarplot(mtcars, x = "make", y = "mpg", 
+                color = "white", fill = "cyl", 
+                palette = "Dark2", 
+                x.text.angle = 90, sort.by.groups = TRUE)
+
+ggarrange(sp,bp,nrow = 2, ncol = 1, common.legend = TRUE)
+```
+
+There's a number of things I like about it as compared with `ggplot2`:
+
+1. The options are more intuitive; no need to do the `aes(x=x,y=y)` crap or anything like that
+2. Adding specific color palletes is REALLY easy, as shown above where I use the `Dark2` color palette
+3. Layouts are really simple when using `ggarrange()`
+
+The drawback I've found thus far is that it's not necessarily as flexible for some things. For instance, earlier this week I tried to make a barplot that had a line plotted on top of it and couldn't for the life of me figure out how to do it. It's really simple in `ggplot2()`, but hard in `ggpubr`, or at least I haven't figured it out yet. 
+
+So ultimately, I really like it, but I don't know all the options yet and I bet if you did, you could figure out the "drawback" I've identified. 
+
+### The dumb one
+
+For some reason, there's now an emoticon package for R [here](https://github.com/hadley/emo). Why does this exist? Who knows?! But now you can do silly things like this in RStudio and embed them in your RMarkdown:
+
+```{r message = FALSE}
+library(emo)
+
+emo::ji("happy")
+```
+
+It includes other strange things, like flags of different countries and WAY too many other options. Check out the link if you want more info, including how to install it. So...something kind of fun if you're interested. 
+
+## Your Tasks
+
+Rather than dictating exactly what we're looking for this week, I want to keep things a bit more open-ended. You've got the Wisconsin breast cancer dataset, which has a bunch of metrics including a classification as "benign" or "malignant". If you don't remember that dataset, it's described in [Week 1 Materials](https://marichards.github.io/FH_intermediate_R/Week_1/Week_1_Materials.html) and saved in the [Datasets Folder](https://github.com/marichards/FH_intermediate_R/tree/master/Datasets) This classification is the outcome we're most interested in; we don't necessarily have to make a predictive model, but we'd like to know what factors are associated with cancer malignancy. I can think of a whole bunch of things you could look at, but you can pick whatever speaks to you, so long as it has to do with the cancer classification. Using the dataset, create a short formatted analysis including:
+
+* Some basic summary statistics of the raw data (please re-title the data columns!)
+* At least 1 plot
+* A short analysis of something in the dataset that corresponds to cancer malignancy classification
+* At least 1 block of R code that results in numerical output
+
+That's it for the guidelines; however, I reserve the right to add one or two if I stumble across anything I've forgotten. As further guidance, here are a handful of functions you may find useful:
+
+* `boxplot`
+* `barplot`
+* `qplot`
+* `ggplot`
+* `cor`
+* `summary`
+* `table`
+* `lm` 
+
+If you so choose, you can also check out the documentation on `ggpubr`; I find it pretty intuitive.
+
+The text need not be particularly long; just enough to describe what you're doing and your pertinent findings. Good luck!
+
+
+
 
