@@ -12,7 +12,7 @@ As the course goes on, you can expect to find more resources here. In particular
 
 ## Class Schedule
 
-The class is from 2-4 PM on Thursday afternoons and runs for 7 weeks. Our room  should be consistent for all 7 weeks, but if there are unexpected changes, I will update them here. Here is the most current schedule:
+The class is from 2-4 PM on Thursday afternoons and runs for 7 weeks. Our class will alternate between 2 rooms during the course and if there are unexpected changes, I will update them here. Here is the most current schedule:
 
 Date |  Room # | Topic
 ---- | -------- | ---------
