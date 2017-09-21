@@ -10,6 +10,8 @@ This is the portal to Intermediate R, a class in the [Fredhutch.io series](http:
 
 As the course goes on, you can expect to find more resources here. In particular, I will be posting in-class activities and some sample solutions each week. 
 
+R is swell!
+
 ## Class Schedule
 
 The class is from 2-4 PM on Thursday afternoons and runs for 7 weeks. Our class will alternate between 2 rooms during the course and if there are unexpected changes, I will update them here. Here is the most current schedule:
