@@ -65,14 +65,14 @@ For these exercises, you'll want to download the Breast Cancer Dataset from UCI'
 
 1. Read the .csv file into R so you get a data frame, then give actual titles to the variables (columns) so you know what each column is. On the UCI website, there's more information on the names of each column. 
 
-2. The final column of the dataset specifies tumor malignancy, but does so with an odd system of 2/4 being assigned to Benign/Malignant, respectively. Using the DataCamp control structures, add a new column to the data frame that explicitly says "Benign" or "Malignant" based on the existing column. The new column should be a *factor* variable. Check your results by using `summary()` to look at your new data frame
+2. The final column of the dataset specifies tumor malignancy, but does so with an odd system of 2/4 being assigned to Benign/Malignant, respectively. Using the DataCamp control structures (for/if/else), add a new column to the data frame that explicitly says "Benign" or "Malignant" based on the existing column. The new column should be a *factor* variable. Check your results by using `summary()` to look at your new data frame
 
 3. Repeat exercise #2, but this time use `ifelse()` to accomplish your goal
 
-4. Here's one from my own research: recently, we've been working with some DNA footprinting data on different chromosomes. We'd like to designate some chromosomes as something of a "training" set to establish a background level, but we want to do so randomly. We want a script that does the following:
+4. An interesting data structure in R is the "list" structure; it basically functions as a bucket for whatever data you want. For instance, you could have a list of 3 data frames, or a list of 2 data frames and a character vector, or any other combination (including lists of lists). Oftentimes it's useful to figure out some properties of your list before you tackle it. To simulate this sort of situation, I've created some fake data (called `fake.data.RDS`) in the class `Datasets` folder. Do the following:
 
-* Creates a random integer from 1-24 (22 numbered chromosomes plus X and Y)
-* Uses the random integer to designate the appropriate chromosome and pastes it to the abbreviation `chr`
-* Outputs the random chromosome string (e.g. `chr8` or `chrY`)
-
-You may find the `sample()` and `paste0()` functions useful here. 
+* Load the dataset and examine it
+* Create a data frame where each row corresponds to an element of the list and contains the:
+   * Length of the element
+   * Mean of the element
+   * Standard deviation of the element
