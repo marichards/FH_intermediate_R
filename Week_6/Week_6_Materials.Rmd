@@ -203,7 +203,7 @@ I have effectively taken small snapshots of some databases I created for the "bo
 
 5. How many rows are identical between the each of the 2 sets of matching tables? (i.e. what did the methods both find that are exactly the same?)
 
-6. Let's narrow it down even further; how many hits are found between the 25,000,000 and 30,000,000 positions? That is, the region needs to start AFTER 25 million bp and end BEFORE 30,000 positions (this is NOT quite the same as the `fp_start` and `fp_end` columns). How many hits do you find for each method? 
+6. Let's narrow it down even further; how many hits are found between the 25,000,000 and 30,000,000 positions? That is, the region needs to start AFTER 25 million bp and end BEFORE 30,000 positions. This is NOT quite the same as the `fp_start` and `fp_end` columns; we're specifically talking about the `start` and `endpos` columns of the `regions` table. How many hits do you find for each method? 
 
 7. Using our 2 new data sets from step 6, put the 2 together into one data frame. Then, use your `dplyr` skills to pull out these statistics for each method:
     * Mean, median, min, and max of the "score1" column
@@ -248,12 +248,14 @@ length(intersect(well.hits$name, hint.hits$name)) # 1328
 setdiff(well.hits$name, hint.hits$name) # 5 names I don't want to deal with here
 
 # Here's how to find all rows in common (question 5)
-length(intersect(well.hits, hint.hits)) #16
-length(intersect(well.regions, hint.regions)) #4
+length(intersect(well.hits, hint.hits)) # 0
+length(intersect(well.regions, hint.regions)) # 0
 
 # Here's how to join them together and grab the specified positions (question 6)
-spec.well <- well.hits %>% left_join(well.regions, by = "loc") %>% filter(start > 25000000, endpos < 30000000) # 679
-spec.hint <- hint.hits %>% left_join(hint.regions, by = "loc") %>% filter(start > 25000000, endpos < 30000000) # 2345
+spec.well <- well.hits %>% left_join(well.regions, by = "loc") %>% filter(start > 25000000, endpos < 30000000) 
+spec.hint <- hint.hits %>% left_join(hint.regions, by = "loc") %>% filter(start > 25000000, endpos < 30000000) 
+nrow(spec.well) # 679
+nrow(spec.hint) # 2345
 
 # Here's how to put together the datasets and pull out grouped summary statistics:
 my.stats <- bind_rows(spec.well, spec.hint) %>% 

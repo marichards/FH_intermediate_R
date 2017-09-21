@@ -123,6 +123,3 @@ If you so choose, you can also check out the documentation on `ggpubr`; I find i
 
 The text need not be particularly long; just enough to describe what you're doing and your pertinent findings. Good luck!
 
-
-
-

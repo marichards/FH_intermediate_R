@@ -12,17 +12,17 @@ As the course goes on, you can expect to find more resources here. In particular
 
 ## Class Schedule
 
-The class is from 2-4 PM on Thursday afternoons and runs for 7 weeks. Our room  should be consistent for all 7 weeks, but if there are unexpected changes, I will update them here. Here is the most current schedule:
+The class is from 2-4 PM on Thursday afternoons and runs for 7 weeks. Our class will alternate between 2 rooms during the course and if there are unexpected changes, I will update them here. Here is the most current schedule:
 
 Date |  Room # | Topic
 ---- | -------- | ---------
-7/6 | M3-A805 | Intro, Control Flow
-7/13 | M3-A805 | Functions, The "apply" Family, Misc.
-7/20 | M3-A805 | dplyr: select/filter/mutate/arrange
-7/27 | M3-A805 | dplyr: summarise/group_by
-8/3 | M3-A805 | dplyr: Simple Joins
-8/10 | M3-A805 | dplyr: Advanced Joins
-8/17 | M3-A805 | RMarkdown
+09/21 | M3-A805 | Intro, Control Flow
+09/28 | M3-A805 | Functions, The "apply" Family, Misc.
+10/05 | M4-A805 | dplyr: select/filter/mutate/arrange
+10/12 | M4-A805 | dplyr: summarise/group_by
+10/19 | M4-A805 | dplyr: Simple Joins
+10/26 | M3-A805 | dplyr: Advanced Joins
+11/02 | M4-A805 | RMarkdown
 
 ## Weekly Materials
 
@@ -49,5 +49,5 @@ The following space includes resources for each week of the course and will be u
 ### Week 6
 - Here are the [Week 6 Materials](https://marichards.github.io/FH_intermediate_R/Week_6/Week_6_Materials.html). These materials build out the SQL style of writing queries, a useful skill to couple with your knowledge of `dplyr`. 
 
-### Week 6
+### Week 7
 - Here are the [Week 7 Materials](https://marichards.github.io/FH_intermediate_R/Week_7/Week_7_Materials.html). These materials review the RMarkdown concepts introduced by DataCamp and add a few other useful bits of infromation. The associated activity is creating your own reproducible report, complete with embedded R code and at least 1 plot.  
