@@ -7,10 +7,9 @@ This is the portal to Intermediate R, a class in the [Fredhutch.io series](http:
 - [A Brief Intro to Git/Github](https://marichards.github.io/FH_intermediate_R/User_Guides/Intro_to_Github.html)
 - [A Glossary of R Commands](https://marichards.github.io/FH_intermediate_R/R_Glossary.html)
 - [Useful Terminal Commands](https://marichards.github.io/FH_intermediate_R/Terminal_Commands.html)
+- [One Guide to R Code Style](https://cran.r-project.org/web/packages/rockchalk/vignettes/Rstyle.pdf)
 
 As the course goes on, you can expect to find more resources here. In particular, I will be posting in-class activities and some sample solutions each week. 
-
-R is swell!
 
 ## Class Schedule
 
