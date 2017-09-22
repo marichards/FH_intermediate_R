@@ -1,7 +1,7 @@
 ---
 title: "R Glossary"
 author: "Matt Richards"
-date: "7/12/2017"
+date: "09/22/2017"
 output: html_document
 ---
 
@@ -50,6 +50,7 @@ This document is designed to aggregate a list of various functions in R that are
 * `tail()` Print out the final rows of the data (default is 6 rows)
 * `print()` Print out the text or variable supplied
 * `names()` Access the names of a dataset; this is the column names for a data frame
+* `complete.cases()` Identify rows in a dataset without any missing data
 
 ### Coercing Data Types
 
