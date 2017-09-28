@@ -1,0 +1,126 @@
+---
+title: "Week 1 Solution"
+author: "Matt Richards"
+date: "9/28/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Read in the data and title the columns appropriately
+
+We'll download the data directly using the URL to the CSV:
+
+```{r}
+my.url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data"
+download.file(url = my.url, 
+              destfile = "./breastCancerData.csv")
+```
+
+Then we'll read it in and check out the data:
+
+```{r}
+cancer.data <- read.csv("./breastCancerData.csv")
+str(cancer.data)
+```
+
+Finally, we'll re-title the columns and check them out to make sure they look right:
+
+```{r}
+names(cancer.data) <- c("SampleID", "ClumpThickness", "SizeUniformity",
+                        "ShapeUniformity", "MarginalAdhesion", "SingleCellSize",
+                        "BareNuclei", "BlandChromatin", "NormalNucleoli", 
+                        "Mitoses", "Class")
+str(cancer.data)
+```
+
+## 2. Use Control Structures to Add a Factor Column
+
+We're going to brute force this with a for-if combination. Basically, for each entry we'll look at the "Class" column and if it's a 2, we'll make the entry "Benign"; if it's a 4, we'll make the entry "Malignant". We'll put these into a charater vector to start with.
+
+```{r}
+# Create an empty vector
+new.col <- character(length = nrow(cancer.data))
+
+for(i in 1:nrow(cancer.data)){
+  
+  if(cancer.data$Class[i] == 2){
+    new.col[i] <- "Benign"
+  } else {
+    new.col[i] <- "Malignant"
+  }
+}
+```
+
+Let's make our new column a factor and add it to the data frame:
+
+```{r}
+cancer.data$ClassName <- as.factor(new.col)
+str(cancer.data)
+```
+
+## 3. Use `ifelse()` to add the column
+
+Alternatively, we could solve our problem with the `ifelse()` function; first, let's get back our original data frame by removing the final column:
+
+```{r}
+cancer.data$ClassName <- NULL
+str(cancer.data)
+```
+
+Now, we'll again do the brute force way of using a for loop, but now we'll simplify the if structure:
+
+```{r}
+new.col <- character(length = nrow(cancer.data))
+
+for(i in 1:nrow(cancer.data)){
+  new.col[i] <- ifelse(cancer.data$Class[i] == 2, "Benign","Malignant")
+}
+```
+
+Again, let's add it as a factor:
+
+```{r}
+cancer.data$ClassName <- as.factor(new.col)
+str(cancer.data)
+```
+
+## 4. Assemble a data frame describing the fake data
+
+We'll start by loading the fake data from the appropriate folder:
+
+```{r}
+fakeData <- readRDS("../Datasets/fake.data.RDS")
+length(fakeData)
+```
+
+Recall that our fake data are in a list of 1000 elements, where each element may have a different number of elements and different values for those elements. We'll create 3 vectors and loop over the list to fill our vectors. 
+
+```{r}
+# Create 3 vectors to store values
+all.lengths <- numeric(length = length(fakeData))
+all.means <- numeric(length = length(fakeData))
+all.sds <- numeric(length = length(fakeData))
+
+# Loop over the list using double brackets
+for(i in 1:length(fakeData)){
+  
+  all.lengths[i] <- length(fakeData[[i]])
+  all.means[i] <- mean(fakeData[[i]])
+  all.sds[i] <- sd(fakeData[[i]])
+}
+```
+
+Note that the double brackets here were essential for accessing the members of the list. Now we'll put these vectors together to make a 1000 x 3 data frame:
+
+```{r}
+
+df <- data.frame(Lengths = all.lengths,
+                 Means = all.means,
+                 StDevs = all.sds)
+summary(df)
+```
+
+I used the `summary()` function here to show the basic characteristics of the data. The average mean is about 0 and the average standard deviation is about 1; this is to be expected, as all numbers were generated using random standard normals. The average length is also somewhere around 1050, which is the midpoint between 100 and 2000, the range of vector lengths I used. 
