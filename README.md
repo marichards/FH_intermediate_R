@@ -32,14 +32,17 @@ The following space includes resources for each week of the course and will be u
 ### Week 1 
 
 - Here is a link to the [Week 1 Materials](https://marichards.github.io/FH_intermediate_R/Week_1/Week_1_Materials.html). These materials quickly summarize the important takeaways from the week's DataCamp lessons, add a couple new pieces of information, and provide some practice exercises for the class session. 
+- If you get stuck, the [Week 1 Solution](https://marichards.github.io/FH_intermediate_R/Week_1/Week_1_solution.html) is now up. 
 
 ### Week 2
 
 - I've created a very short [slide deck](https://marichards.github.io/FH_intermediate_R/Week_2/Week_2_Slides.html) that focuses on coding approach, specifically by encouraging pseudocoding. 
 - Here are the [Week 2 Materials](https://marichards.github.io/FH_intermediate_R/Week_2/Week_2_Materials.html). These include some additional materials and activities on the `apply` family and regular expressions. The latter were covered only briefly in the DataCamp lessons, and my materials will greatly expand on them
+- I have posted a partial [Week 2 Solution](https://marichards.github.io/FH_intermediate_R/Week_2/Week_2_Solution.html) that covers the most difficult exercise in the materials. A full solution will follow if necessary. 
 
 ### Week 3
 - Here are the [Week 3 Materials](https://marichards.github.io/FH_intermediate_R/Week_3/Week_3_Materials.html), which include some additional functions in `dplyr` and some extra exercises to work on during class. 
+- I've posted a [Week 3 Solution](https://marichards.github.io/FH_intermediate_R/Week_3/Week_3_Solution.html) to help you out if you get stuck, or if you want to see how I solved the problem. 
 
 ### Week 4
 - Here are the [Week 4 Materials](https://marichards.github.io/FH_intermediate_R/Week_4/Week_4_Materials.html). This is the 2nd lesson on `dplyr`, which finishes the introduction to the main "verbs" in `dplyr` and also covers pipes (`%>%`).
