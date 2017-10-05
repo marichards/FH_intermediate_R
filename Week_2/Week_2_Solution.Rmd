@@ -1,0 +1,75 @@
+---
+title: "Week 2 Solution"
+author: "Matt Richards"
+date: "10/5/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+During class, we went through some brief solutions to the first few parts; I may post these later, but I wanted to mainly address the 2nd part of the exercises: using regular expressions to clean up some compound data. 
+
+## Part 2: Read in and clean up the KEGG compounds
+
+Just as a reminder, here's what we're basically looking at:
+
+```{r}
+readLines("../Datasets/keggcompounds.txt", n = 20)
+```
+
+That's just the top 20 lines; to get the whole file, we'll read in the whole thing with `readLines()`, a general purpose function for reading in text:
+
+```{r}
+kegg <- readLines("../Datasets/keggcompounds.txt")
+length(kegg)
+```
+
+As you can see, there's a little over 1 million lines here. Looking at our snippet, the IDs seem to be preceeded by "ENTRY" and the names are preceeded by "NAME". So I'll pull out the two things initially like that, saving the strings themselves using `value = TRUE`:
+
+```{r}
+ids <- grep("^ENTRY", kegg, value = TRUE)
+names <- grep("^NAME", kegg, value = TRUE)
+length(ids)
+length(names)
+```
+
+You can see there that I anchored the pattern to the start of the line using `"^"`. The numbers match up here, which is a good sign. Now I want to look at what I have and clean it up from there:
+
+```{r}
+ids[1]; names[1]
+```
+As we can see, the ID is pretty easy to pick out as it's a "C" followed by 5 numbers. We'll get to the name in a minute, but let's pull out the ID:
+
+```{r}
+ids <- gsub(".*(C\\d{5}).*","\\1", ids)
+str(ids)
+```
+Looks good to me; it's the right number of entries and they all look the same. Now let's get to names. First things first, I'm annoyed by the semi-colons at the end, so I want to see how many there are:
+
+```{r}
+sum(grepl(";",names))
+```
+
+That's annoying and something I'll have to get to later. Names are trickier because they're not standard and maybe they'll have semi-colons in the middle; I don't want to mess with that yet. So what I'll do instead of looking for a specific pattern is use a more general one. In this case, I notice that my names are all preceeded by "NAME" and some whitespace, so I'll match that, but then grab the set of non-whitespace characters that follow it:
+
+```{r}
+# Extract the name from each one
+short.names <- gsub("NAME\\s+(\\S+).*","\\1",names)
+head(short.names)
+```
+
+You'll notice that I used the parentheses here and then recalled the argument matched inside the parentheses. It's a really REALLY useful technique. And it looks like I got what I wanted, so now it's just a matter of those pesky semi-colons. There's an off chance there might be some of them inside of compound names, so I'll remove only the ones on the end, just in case:
+
+```{r}
+short.names <- gsub(";$","",short.names)
+head(short.names)
+```
+
+Now all that's left to do is create my data frame, which I could save somewhere for later use if I wanted. I'll show the top and bottom of it just to demonstrate that it has the right stuff:
+
+```{r}
+my.df <- data.frame(id = ids, name = short.names)
+head(my.df, 20); tail(my.df, 20)
+```
