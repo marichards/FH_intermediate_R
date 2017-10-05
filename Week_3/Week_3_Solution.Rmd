@@ -9,13 +9,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Part 1: Using `dplyr`
-
 Here's one possible solution to the in-class exercises:
 
 We'll start by reading in our files:
 
-```{r}
+```{r message = FALSE, warning = FALSE}
+library(dplyr)
 human.hoco <- read.table(file = "../Datasets/tomtom_human.txt")
 mouse.hoco <- read.table(file = "../Datasets/tomtom_mouse.txt")
 all.hoco <- rbind(human.hoco,mouse.hoco)
