@@ -1,7 +1,7 @@
 ---
-title: "Week 3 Solution"
+title: "Week 4 Solution"
 author: "Matt Richards"
-date: "7/26/2017"
+date: "10/12/2017"
 output: html_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 I'm going to define my solution in a function that I can call:
 
 ```{r message=FALSE}
-library(dplyr); library(data.table)
+library(dplyr)
 
 matt_fxn <- function(my.data){
 # Function for pulling out genes + rank
@@ -29,7 +29,7 @@ gene.list <- gene.list[1:100]
 
 df.list <- lapply(gene.list, pullGeneAndRank, my.data)
 
-all.df <- rbindlist(df.list)
+all.df <- bind_rows(df.list)
 
 # Create summary statistics
 final.df <- all.df %>% group_by(gene) %>%
@@ -40,7 +40,7 @@ final.df <- as.data.frame(final.df)
 }
 ```
 
-You'll notice I used the `data.table` package; this is purely out of convenience and you could do it other ways if you wanted to. Here's the output:
+You'll notice I used the `bind_rows` function, which is also part of the `dplyr` package; this is purely out of convenience and you could do it other ways if you wanted to. You'll learn about that function soon enough anyway. Here's the output:
 
 ```{r}
 my.data <- readRDS("../Datasets/mayo.tcx.rds")
