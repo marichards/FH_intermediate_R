@@ -75,18 +75,17 @@ The other little things they added were alternatives to `rbind()` and `cbind()`:
 
 As they said, you should be very careful when using these options as you can easily ruin your data frame. If you're able to use joins, they're actually much more specific. It's similar to the difference between a hash table and a regular list (or dictionary and list if you're a Python person). That said, the extra functionality of being able to add the `.id` option is really handy if you have a list of named data frames you want to collapse into one data frame. And they're fast!
 
-
 ## In-class Exercises
 
 There's so much material we covered this week that I haven't added anything additional. Plus, I think the material was pretty comprehensive on its own. So I'd like to take you back to 2 weeks ago, when I introduced you to motifs. The problem went something like this:
 
 * I have a set of motifs; these are essentially the observed binding sites for transcription factors (TFs).
 * Motifs come from different places, but they aren't all independent; in fact, some of them are definitely redundant across databases
-* Using 1 database (Jaspar) as the starting set of motifs, I want to add all NEW (non-redundant) motifs from another database (HOCOMOCO)
+* Using 1 database (JASPAR) as the starting set of motifs, I want to add all NEW (non-redundant) motifs from another database (HOCOMOCO)
 * As an end goal, you produced 2 things:
 
-    * A data frame with only the "redundant" HOCOMOCO motifs, mapped to the Jaspar motifs they matched
-    * A list of "non-redundant" Jaspar and HOCOMOCO motifs
+    * A data frame with only the "redundant" HOCOMOCO motifs, mapped to the JASPAR motifs they matched
+    * A list of "non-redundant" JASPAR and HOCOMOCO motifs
     
 That was Week 3; if you haven't yet run through that exercise, I encourage you to take the time to go back and make your way through it. It's an excellent use case of `dplyr` together with regular expressions. 
 
