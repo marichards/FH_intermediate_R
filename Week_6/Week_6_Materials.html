@@ -269,8 +269,8 @@ head(hr.50)</code></pre>
 <li><p>How many unique motifs appear in the respective databases? How do they compare (Hint: the motifs generally look like <code>MA0001.1</code>, <code>MA0002.1</code>, etc)?</p></li>
 <li><p>How many total motifs (not just unique ones) appear in the respective databases? How do those numbers compare?</p></li>
 <li><p>How many motifs (just the names) appear in both datasets? Which ones don’t appear in HINT but do appear in Wellington?</p></li>
-<li><p>How many rows are identical between the each of the 2 sets of matching tables? (i.e. what did the methods both find that are exactly the same?)</p></li>
-<li><p>Let’s narrow it down even further; how many hits are found between the 25,000,000 and 30,000,000 positions? That is, the region needs to start AFTER 25 million bp and end BEFORE 30,000 positions (this is NOT quite the same as the <code>fp_start</code> and <code>fp_end</code> columns). How many hits do you find for each method?</p></li>
+<li><p>How many rows are identical between the each of the 2 sets of matching tables? (i.e. what did the methods both find that are exactly the same?) **Note that for the “hits” tables, you should only be comparing the fp_start/fp_end/names columns; the other columns should be ignored for this question.</p></li>
+<li><p>Let’s narrow it down even further; how many hits are found between the 25,000,000 and 30,000,000 positions? That is, the region needs to start AFTER 25 million bp and end BEFORE 30,000 positions. This is NOT quite the same as the <code>fp_start</code> and <code>fp_end</code> columns; we’re specifically talking about the <code>start</code> and <code>endpos</code> columns of the <code>regions</code> table. How many hits do you find for each method?</p></li>
 <li>Using our 2 new data sets from step 6, put the 2 together into one data frame. Then, use your <code>dplyr</code> skills to pull out these statistics for each method:
 <ul>
 <li>Mean, median, min, and max of the “score1” column</li>
@@ -287,6 +287,69 @@ head(hr.50)</code></pre>
 <h3>BONUS EXERCISE</h3>
 <p>A lot of these commands can be done directly in SQL; try doing step 6 using the R-SQL connection directly rather than <code>dplyr</code>. If done correctly, you should get the same exact answer.</p>
 </div>
+</div>
+<div id="solutions" class="section level2">
+<h2>Solutions</h2>
+<pre class="r"><code># Here's how to read them into dataframes:
+well.con &lt;- dbConnect(SQLite(), dbname = &quot;../Datasets/well.bone.db&quot;)
+hint.con &lt;- dbConnect(SQLite(), dbname = &quot;../Datasets/hint.bone.db&quot;)
+well.hits &lt;- dbGetQuery(well.con, &quot;select * from hits;&quot;)
+hint.hits &lt;- dbGetQuery(hint.con, &quot;select * from hits;&quot;)
+well.regions &lt;- dbGetQuery(well.con, &quot;select * from regions;&quot;)
+hint.regions &lt;- dbGetQuery(hint.con, &quot;select * from regions;&quot;)
+
+# Here's how to check the tables and fields (question 1)
+dbListTables(well.con) # hits, regions
+dbListTables(hint.con) # hits, regions
+dbListFields(well.con, name = &quot;hits&quot;) # Lots of things
+dbListFields(well.con, name = &quot;regions&quot;) # Fewer things; relates by &quot;loc&quot; column
+
+# Here's how to check the rows in each (last 2 are for question 3)
+nrow(hint.regions) #18560
+nrow(well.regions) #9049
+nrow(hint.hits) #32649
+nrow(well.hits) #13240
+
+# Here's how to check unique motifs in the hits (question 2)
+length(unique(well.hits$name)) #1333
+length(unique(hint.hits$name)) #1482
+
+# Here's how to find those in common and the ones only in wellington (question 4)
+length(intersect(well.hits$name, hint.hits$name)) # 1328
+setdiff(well.hits$name, hint.hits$name) # 5 names I don't want to deal with here
+
+# Here's how to find all rows in common (question 5)
+well.sub &lt;- well.hits %&gt;% select(fp_start, fp_end, name)
+hint.sub &lt;- hint.hits %&gt;% select(fp_start, fp_end, name)
+
+length(dplyr::intersect(well.sub, hint.sub)) # 0
+length(dplyr::intersect(well.regions, hint.regions)) # 0
+
+# Here's how to join them together and grab the specified positions (question 6)
+spec.well &lt;- well.hits %&gt;% left_join(well.regions, by = &quot;loc&quot;) %&gt;% filter(start &gt; 25000000, endpos &lt; 30000000) 
+spec.hint &lt;- hint.hits %&gt;% left_join(hint.regions, by = &quot;loc&quot;) %&gt;% filter(start &gt; 25000000, endpos &lt; 30000000) 
+nrow(spec.well) # 679
+nrow(spec.hint) # 2345
+
+# Here's how to put together the datasets and pull out grouped summary statistics:
+my.stats &lt;- bind_rows(spec.well, spec.hint) %&gt;% 
+  select(name, length, method, score1) %&gt;%
+  group_by(method) %&gt;%
+  summarise(Unique.motifs = n_distinct(name),
+            Mean.score = mean(score1),
+            Med.score = median(score1),
+            Max.score = max(score1),
+            Min.score = min(score1),
+            Mean.length = mean(length),
+            Med.length = median(length),
+            Max.length = max(length),
+            Min.length = min(length)
+            )
+my.stats
+
+# Here's an example plot looking at the distribution of scores v. length
+bind_rows(spec.well, spec.hint) %&gt;%
+  ggplot(aes(x = length, y = score1)) + geom_point(aes(col = method))</code></pre>
 </div>
 
 

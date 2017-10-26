@@ -201,7 +201,7 @@ I have effectively taken small snapshots of some databases I created for the "bo
 
 4. How many motifs (just the names) appear in both datasets? Which ones don't appear in HINT but do appear in Wellington?
 
-5. How many rows are identical between the each of the 2 sets of matching tables? (i.e. what did the methods both find that are exactly the same?)
+5. How many rows are identical between the each of the 2 sets of matching tables? (i.e. what did the methods both find that are exactly the same?) **Note that for the "hits" tables, you should only be comparing the fp_start/fp_end/names columns; the other columns should be ignored for this question. 
 
 6. Let's narrow it down even further; how many hits are found between the 25,000,000 and 30,000,000 positions? That is, the region needs to start AFTER 25 million bp and end BEFORE 30,000 positions. This is NOT quite the same as the `fp_start` and `fp_end` columns; we're specifically talking about the `start` and `endpos` columns of the `regions` table. How many hits do you find for each method? 
 
@@ -218,7 +218,9 @@ What can you say about how the methods compare? Anything interesting?
 
 A lot of these commands can be done directly in SQL; try doing step 6 using the R-SQL connection directly rather than `dplyr`. If done correctly, you should get the same exact answer. 
 
-```{r echo = FALSE, eval = FALSE}
+## Solutions
+
+```{r echo = TRUE, eval = FALSE}
 # Here's how to read them into dataframes:
 well.con <- dbConnect(SQLite(), dbname = "../Datasets/well.bone.db")
 hint.con <- dbConnect(SQLite(), dbname = "../Datasets/hint.bone.db")
@@ -234,8 +236,8 @@ dbListFields(well.con, name = "hits") # Lots of things
 dbListFields(well.con, name = "regions") # Fewer things; relates by "loc" column
 
 # Here's how to check the rows in each (last 2 are for question 3)
-nrow(hint.regions)
-nrow(well.regions)
+nrow(hint.regions) #18560
+nrow(well.regions) #9049
 nrow(hint.hits) #32649
 nrow(well.hits) #13240
 
@@ -248,8 +250,11 @@ length(intersect(well.hits$name, hint.hits$name)) # 1328
 setdiff(well.hits$name, hint.hits$name) # 5 names I don't want to deal with here
 
 # Here's how to find all rows in common (question 5)
-length(intersect(well.hits, hint.hits)) # 0
-length(intersect(well.regions, hint.regions)) # 0
+well.sub <- well.hits %>% select(fp_start, fp_end, name)
+hint.sub <- hint.hits %>% select(fp_start, fp_end, name)
+
+length(dplyr::intersect(well.sub, hint.sub)) # 0
+length(dplyr::intersect(well.regions, hint.regions)) # 0
 
 # Here's how to join them together and grab the specified positions (question 6)
 spec.well <- well.hits %>% left_join(well.regions, by = "loc") %>% filter(start > 25000000, endpos < 30000000) 
@@ -271,6 +276,7 @@ my.stats <- bind_rows(spec.well, spec.hint) %>%
             Max.length = max(length),
             Min.length = min(length)
             )
+my.stats
 
 # Here's an example plot looking at the distribution of scores v. length
 bind_rows(spec.well, spec.hint) %>%
