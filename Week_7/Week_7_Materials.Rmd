@@ -18,7 +18,7 @@ This week was quite different from the previous ones; instead of new data manipu
     * Different sections are marked using the "#" symbol for headers
     * Unordered lists can be made using various bullets (e.g. `*`, `-`)
     * Ordered lists can be made using numbers or letters
-    * Make hyperlinks using the "[]()" notation
+    * Make hyperlinks using the `[]()` notation
     * Make **bold** and *italics* using the `*` symbol around your text
     * Embed LaTeX using double `$` signs around your text
 * Include and evaluate R code both inline or in chunks
